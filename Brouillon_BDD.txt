@@ -1,0 +1,62 @@
+USER
+  pseudo 
+  pwd
+  id (int)
+  stamina (int)
+
+
+CHARACTER
+  id (int)
+  user (USER.id)
+  name
+  level (int)
+  life (int)
+  attack (int)
+  race (RACE.name)
+  class (CLASS.name)
+
+INVENTORY
+  objects[int] ([OBJECT.id])
+
+OBJECT
+  id
+  name
+  description
+
+RACE
+  name
+  description
+  bonus (string)
+
+CLASS
+  name
+  description
+  competence
+
+STORY
+  id
+  character (CHARACTER.id)
+  name
+  stamina
+  reward
+  rooms[int] ([ROOM.id])
+
+ROOM
+  id
+  enemy (ENEMY.id)
+  reward (OBJECT.id)
+  enemyKilled (bool)
+  rewardTaken (bool)
+  visited (bool)
+  exit (bool)
+  
+
+ENEMY
+  id
+  name
+  life (int)
+  attack (int)
+  level (int)
+
+
+
