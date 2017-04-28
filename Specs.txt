@@ -1,0 +1,48 @@
+Le but est de donner l’impression à l’utilisateur d’un Livre Dont Vous Êtes Le Héros virtuel.
+Une histoire, découpée en chapitres, est proposée à l’utilisateur. Celui-ci crée un personnage qu’il incarnera pendant cette aventure.
+Chacun de ces chapitres possède un objectif. Si les objectifs sont identiques pour chaque personnage, les moyens d’y parvenir sont divers et certains sont propres à une classe. De plus, les décisions effectuées et les objets récupérés durant un chapitre peuvent avoir une incidence sur la suite de l’aventure.
+Des chapitres sont ajoutés au fur et à mesure, faisant progresser l’histoire.
+
+?	Création du Compte :
+
+-	La création du compte est habituelle : Nom de Compte, mot de passe.
+-	Chaque compte possède un personnage. Un reset peut être effectué à tout moment. Il entraîne néanmoins un reset de la progression dans l’histoire (choix et objets possédés sont effacés). Un nouveau personnage commence obligatoirement l’histoire au Chapitre 1.
+-	Comme spécifié dans le sujet, nous permettons à l’utilisateur de choisir un avatar pour son compte.
+
+?	Création du Personnage :
+
+-	Sélection de la Race : Bonus passif permanent
+-	Sélection de la Classe : Actions propres à chaque classe
+-	Nom du personnage
+
+?	Fonctionnalités et déroulement du jeu :
+
+-	Chaque jour, l’utilisateur reçoit un nombre fixe de Points d’Action (PA). Ces PA permettent à l’utilisateur de déplacer son personnage dans l’environnement en 2D.
+-	Pour avancer dans l’histoire et changer de chapitre, l’objectif principal du chapitre en cours doit être rempli.
+-	Pour aider à la résolution de cet objectif principal, des indications sont également affichées, des sortes d’objectifs secondaires proposant une route possible à l’utilisateur.
+-	Un inventaire est disponible et est accessible à tout moment via le menu. Il contient les objets obtenus propres à la résolution du chapitre mais conservera également ceux pouvant servir dans des chapitres futurs.
+-	Un historique des choix est également consultable via le menu. Il indique à l’utilisateur ses choix principaux, classés par chapitre, au cours de l’aventure.
+
+?	Environnement :
+
+-	Il s’agit d’un environnement 2D, « pixel-art », découpé en pièces distinctes. Au fil du déroulement de l’aventure (chapitre après chapitre) de nouvelles locations sont introduites, mais un Chapitre est toujours limité à un nombre de pièces fixe qui correspondent aux pièces en relation avec l’objectif en cours.
+-	L’utilisateur déplace son personnage dans cet environnement grâce aux PA qu’il obtient chaque jour. Le déplacement est la seule action « payante » dans le jeu.
+-	En arrivant dans une nouvelle pièce, on soumet au joueur les différents choix qui s’offrent à lui. Certains sont spécifiques à une classe, ou n’apparaissent que si le personnage possède l’objet requis pour le déclencher. Il peut, sauf indication du contraire (combat ou discussion en cours) choisir à tout moment de quitter la salle s’il possède le nombre de PA nécessaire.
+
+
+
+
+Spécifications techniques :
+
+?	Site Web :
+Le site web est, comme demandé, codé via le framework Symfony. On y trouve évidemment un mélange d’HTML, CSS et PHP, mais également du JQuery pour répondre aux inputs des utilisateurs.
+?	Base de Données :
+La base de données MySQL est divisée en deux :
+-	La Base de Données d’utilisateurs. Elle contient les informations de connexion permettant la vérification (à chaque login) de celles entrées par l’utilisateur.
+-	La table propre à chaque compte. Reliée à la première, elle contient grâce à un ID, symbolisant un compte, les objets et les décisions prises par chaque joueur.
+
+?	Jeu :
+Le jeu est codé en Javascript et implémenté dans l’environnement du site web Symfony. A proprement parler, un seul écran correspond à un écran de « jeu » : Celui où les déplacements, choix et combats s’effectuent. Les aautres écrans (inventaire, Historique des choix et autres) correspondent juste à la récupération des données dans la BdD correspondante et à leur affichage sur une page du site.
+Le texte et les choix proposés sont stockés dans des fichiers XML, permettant ainsi un test simple des conditions requises pour débloquer certaines options de dialogue.
+
+Le tout permet de créer un site/jeu modulable. L’histoire, les dialogues, les environnements, entre autres, peuvent tous être remplacés selon les envies des administrateurs. Un changement de chapitre correspond en réalité tout simplement à un swap des fichiers images/texte.
