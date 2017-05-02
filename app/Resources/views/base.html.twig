@@ -3,13 +3,18 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
 
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+           {% stylesheets '@AppBundle/Resources/public/css/main.css' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+            {% endstylesheets %}
+        {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-
 
     <nav class="navbar navbar-inverse">
         <div class="container">
@@ -24,6 +29,8 @@
             </div>
             <!--Si c'est connecté, afficher autre chose -->
             <div id="navbar" class="navbar-collapse collapse">
+
+                {% if not app.user %}
                 <form class="navbar-form navbar-right">
                     <div class="form-group">
                         <input type="text" placeholder="Pseudo" class="form-control">
@@ -42,9 +49,16 @@
                         };
                     </script>
                 </form>
+                {% else %}
+                    <!--CHECK IF THE USER ISN'T ADMIN-->
+                    <p class="navbar-text navbar-right" style="color: white">Stamina :{{ app.user.stamina }} </p>
+                    <p class="navbar-text navbar-right" style="color: white">Name :{{ app.user.username }} </p>
+                {% endif %}
             </div><!--/.navbar-collapse -->
         </div>
     </nav>
+
+
 
     <div class="container">
         <div class="row">
