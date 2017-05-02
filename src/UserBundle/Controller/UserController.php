@@ -2,10 +2,13 @@
 
 namespace UserBundle\Controller;
 
+
 use UserBundle\Entity\user;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * User controller.
@@ -22,13 +25,26 @@ class userController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('UserBundle:user')->findAll();
+        try {
+            $em = $this->getDoctrine()->getManager();
 
-        return $this->render('user/index.html.twig', array(
-            'users' => $users,
-        ));
+            $users = $em->getRepository('UserBundle:user')->findAll();
+
+            return $this->render('user/index.html.twig', array(
+                'users' => $users,
+            ));
+        } catch(AccessDeniedException $e){
+
+            throw $this->createAccessDeniedException('You cannot access this page!');
+            $this->addFlash(
+                'error',
+                'ACCESS DENIED!'
+            );
+
+            return $this->redirectToRoute('homepage');
+        }
+
     }
 
     /**
