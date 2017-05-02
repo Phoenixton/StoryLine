@@ -50,14 +50,23 @@
                     </script>
                 </form>
                 {% else %}
+
+                    <button type="button" id="toLogOut" class="btn btn-lg btn-danger navbar-right" style="margin-left: 10px; padding-top: -5px">Log Out</button>
+
+                    <script type="text/javascript">
+                        document.getElementById("toLogOut").onclick = function () {
+                            location.href = "logout";
+                        };
+                    </script>
                     <!--CHECK IF THE USER ISN'T ADMIN FOR STAMINA-->
                     {% if app.user.username is sameas("admin") %}
-                        <p class="navbar-text navbar-right" style="color: white">Name :{{ app.user.username }} </p>
+                        <p class="navbar-text navbar-right" style="color: white">Name : {{ app.user.username }} </p>
                         <p class="navbar-text navbar-right" style="color: red"> ADMINISTRATEUR </p>
                     {% else %}
-                        <p class="navbar-text navbar-right" style="color: white">Stamina :{{ app.user.stamina }} </p>
-
+                        <p class="navbar-text navbar-right" style="color: white">Stamina : {{ app.user.stamina }} </p>
+                        <p class="navbar-text navbar-right" style="color: white">Name : {{ app.user.username }} </p>
                     {% endif %}
+
                 {% endif %}
             </div><!--/.navbar-collapse -->
         </div>
