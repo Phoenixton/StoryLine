@@ -33,20 +33,19 @@
                 <!--Si personne n'est co -->
                 {% if not app.user %}
                 <form class="navbar-form navbar-right">
-                    <div class="form-group">
-                        <input type="text" placeholder="Pseudo" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" class="form-control">
-                    </div>
 
-                    <button type="submit" class="btn btn-success">Sign in</button>
+                    <button type="button" id="toSignUp" class="btn btn-lg btn-success">Sign Up</button>
 
-                    <button type="button" id="toLogIn" class="btn btn-primary">Log In</button>
+                    <button type="button" id="toLogIn" class="btn btn-lg btn-primary">Log In</button>
 
                     <script type="text/javascript">
                         document.getElementById("toLogIn").onclick = function () {
                             location.href = "login";
+                        };
+                    </script>
+                    <script type="text/javascript">
+                        document.getElementById("toSignUp").onclick = function () {
+                            location.href = "signUp";
                         };
                     </script>
                 </form>
@@ -55,7 +54,7 @@
                     {% if app.user.username is sameas("admin") %}
                         <p class="navbar-text navbar-right" style="color: white">Name :{{ app.user.username }} </p>
                         <p class="navbar-text navbar-right" style="color: red"> ADMINISTRATEUR </p>
-                        {% else %}
+                    {% else %}
                         <p class="navbar-text navbar-right" style="color: white">Stamina :{{ app.user.stamina }} </p>
 
                     {% endif %}
