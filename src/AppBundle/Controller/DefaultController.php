@@ -17,12 +17,4 @@ class DefaultController extends Controller
         return $this->render('AppBundle:HomePage:home.html.twig');
     }
 
-    /**
-     * @Route("/signup", name="signup")
-     */
-    public function signUpAction(Request $request)
-    {
-        // replace this example code with whatever you need
-        return $this->render('AppBundle:HomePage:signup.html.twig');
-    }
 }
