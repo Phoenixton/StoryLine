@@ -2,16 +2,26 @@
 # http://symfony.com/doc/current/security.html
 security:
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
-    providers:
-        main_provider:
-            entity: { class: UserBundle:user, property: username }
-        in_memory:
-            memory: ~
-
     encoders:
         UserBundle\Entity\user:
             algorithm: bcrypt
+        Symfony\Component\Security\Core\User\User:
+            algorithm: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
+
+    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, user_db]
+        in_memory:
+            memory:
+                users:
+                    admin: { password: admin, roles: ROLE_ADMIN }
+        user_db:
+            entity: { class: UserBundle:user, property: username }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -29,3 +39,6 @@ security:
             logout:
                 path: /logout
                 target: /
+
+    access_control:
+        - { path: /user, roles: ROLE_ADMIN }
