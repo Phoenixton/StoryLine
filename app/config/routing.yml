@@ -1,5 +1,5 @@
 user_user:
-    resource: "@UserBundle/Controller/userController.php"
+    resource: "@UserBundle/Controller/UserController.php"
     type:     annotation
 
 app:

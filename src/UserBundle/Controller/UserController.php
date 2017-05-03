@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  *
  * @Route("user")
  */
-class userController extends Controller
+class UserController extends Controller
 {
     /**
      * Lists all user entities.
