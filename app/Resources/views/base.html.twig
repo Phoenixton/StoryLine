@@ -31,26 +31,7 @@
             <div id="navbar" class="navbar-collapse collapse">
 
                 <!--Si personne n'est co -->
-                {% if not app.user %}
-                <form class="navbar-form navbar-right">
-
-                    <button type="button" id="toSignUp" class="btn btn-lg btn-success">Sign Up</button>
-
-                    <button type="button" id="toLogIn" class="btn btn-lg btn-primary">Log In</button>
-
-                    <script type="text/javascript">
-                        document.getElementById("toLogIn").onclick = function () {
-                            location.href = "login";
-                        };
-                    </script>
-                    <script type="text/javascript">
-                        document.getElementById("toSignUp").onclick = function () {
-                            location.href = "signUp";
-                        };
-                    </script>
-                </form>
-                {% else %}
-
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
                     <button type="button" id="toLogOut" class="btn btn-lg btn-danger navbar-right" style="margin-left: 10px; padding-top: -5px">Log Out</button>
 
                     <script type="text/javascript">
@@ -59,13 +40,37 @@
                         };
                     </script>
                     <!--CHECK IF THE USER ISN'T ADMIN FOR STAMINA-->
-                    {% if app.user.username is sameas("admin") %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="collapse navbar-collapse navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li style="margin-left: 50px; margin-right: 50px"><a href="user/">User List</a></li>
+                        </ul>
                         <p class="navbar-text navbar-right" style="color: white">Name : {{ app.user.username }} </p>
                         <p class="navbar-text navbar-right" style="color: red"> ADMINISTRATEUR </p>
-                    {% else %}
-                        <p class="navbar-text navbar-right" style="color: white">Stamina : {{ app.user.stamina }} </p>
-                        <p class="navbar-text navbar-right" style="color: white">Name : {{ app.user.username }} </p>
-                    {% endif %}
+                    </div><!--/.nav-collapse -->
+                    {% elseif is_granted('ROLE_USER') %}
+                    <p class="navbar-text navbar-right" style="color: white">Stamina : {{ app.user.stamina }} </p>
+                    <p class="navbar-text navbar-right" style="color: white">Name : {{ app.user.username }} </p>
+                {% endif %}
+                {% else %}
+
+                    <form class="navbar-form navbar-right">
+
+                        <button type="button" id="toSignUp" class="btn btn-lg btn-success">Sign Up</button>
+
+                        <button type="button" id="toLogIn" class="btn btn-lg btn-primary">Log In</button>
+
+                        <script type="text/javascript">
+                            document.getElementById("toLogIn").onclick = function () {
+                                location.href = "login";
+                            };
+                        </script>
+                        <script type="text/javascript">
+                            document.getElementById("toSignUp").onclick = function () {
+                                location.href = "signUp";
+                            };
+                        </script>
+                    </form>
 
                 {% endif %}
             </div><!--/.navbar-collapse -->
