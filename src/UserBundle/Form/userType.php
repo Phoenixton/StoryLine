@@ -15,6 +15,7 @@ class userType extends AbstractType
     {
         $builder->add('username')
                 ->add('password')
+                ->add('lastconnect')
                 ->add('stamina');
     }
     

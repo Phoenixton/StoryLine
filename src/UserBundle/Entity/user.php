@@ -43,6 +43,13 @@ class user implements UserInterface
      */
     private $stamina;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="lastconnect", type="datetime")
+     */
+    private $lastconnect;
+
 
     /**
      * Get id
@@ -125,6 +132,32 @@ class user implements UserInterface
     {
         return $this->stamina;
     }
+
+
+    /**
+     * Set lastconnect
+     *
+     * @param \Datetime $lastconnect
+     *
+     * @return user
+     */
+    public function setLastconnect($lastconnect)
+    {
+        $this->lastconnect = $lastconnect;
+
+        return $this;
+    }
+
+    /**
+     * Get lastconnect
+     *
+     * @return \Datetime
+     */
+    public function getLastconnect()
+    {
+        return $this->lastconnect;
+    }
+
 
     /**
      * Returns the roles granted to the user.
