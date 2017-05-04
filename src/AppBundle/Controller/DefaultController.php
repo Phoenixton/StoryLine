@@ -28,7 +28,7 @@ class DefaultController extends Controller
                     $usr->setStamina($usr->getStamina() + 10);
                     $em->flush();
                     //?
-                } else if(new \DateTime($usr->getLastconnect()->format('Y-m-d H:i:s')) < new \DateTime((new \DateTime("now"))->format('Y-m-d H:i:s'))){
+                } else if(new \DateTime($usr->getLastconnect()->format('Y-m-d H:i')) < new \DateTime((new \DateTime("now"))->format('Y-m-d H:i'))){
 
                     $usr->setStamina($usr->getStamina() + 10);
                     $em->flush();
@@ -48,6 +48,51 @@ class DefaultController extends Controller
 
         return $this->render('AppBundle:HomePage:home.html.twig');
 
+    }
+
+    /**
+     * @Route("/listofusers", name="listofusers")
+     */
+    public function showAllUsers(){
+        $em = $this->getDoctrine()->getManager();
+
+        date_default_timezone_set('Europe/Paris');
+        $date = date("Y-m-d H:i:s");
+        $securityContext = $this->container->get('security.authorization_checker');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            //get current user
+            if($securityContext->isGranted('ROLE_ADMIN')) {
+
+            } else {
+                $usr= $this->get('security.token_storage')->getToken()->getUser();
+                if($usr->getLastconnect() == null) {
+
+                    $usr->setStamina($usr->getStamina() + 10);
+                    $em->flush();
+                    //?
+                } else if(new \DateTime($usr->getLastconnect()->format('Y-m-d H:i')) < new \DateTime((new \DateTime("now"))->format('Y-m-d H:i'))){
+
+                    $usr->setStamina($usr->getStamina() + 10);
+                    $em->flush();
+
+                } else {
+
+                }
+                /**
+                 * else (if new \DateTime($usr->getLastconnect()->format('Y-m-d')< new \DateTime((new \DateTime("now"))->format('Y-m-d'))
+                 */
+
+                $usr->setLastconnect(new \DateTime((new \DateTime("now"))->format('Y-m-d H:i:s')));
+                $em->flush();
+                //persists the changes
+            }
+        }
+
+        $users = $em->getRepository('UserBundle:user')->findAll();
+
+        return $this->render('user/userlist.html.twig', array(
+            'users' => $users,
+        ));
     }
 
 }
