@@ -1,11 +1,12 @@
-USER
+user
   pseudo 
-  pwd
+  password
   id (int)
   stamina (int)
+  lastconnect (datetime)
 
 
-CHARACTER
+character
   id (int)
   user (USER.id)
   name
@@ -14,44 +15,46 @@ CHARACTER
   attack (int)
   race (RACE.name)
   class (CLASS.name)
+  inventory (INVENTORY.id)
+  story (STORY.id)
 
-INVENTORY
-  objects[int] ([OBJECT.id])
+inventory
+  id
+  objects[int] ([object.id])
 
-OBJECT
+object
   id
   name
   description
 
-RACE
+race
   name
   description
   bonus (string)
 
-CLASS
+characterclass
   name
   description
   competence
 
-STORY
+story
   id
-  character (CHARACTER.id)
   name
   stamina
   reward
-  rooms[int] ([ROOM.id])
+  rooms[int] ([room.id])
 
-ROOM
+room
   id
   enemy (ENEMY.id)
-  reward (OBJECT.id)
-  enemyKilled (bool)
-  rewardTaken (bool)
+  object (OBJECT.id)
+  enemyHere (bool)
+  objectHere (bool)
   visited (bool)
   exit (bool)
   
 
-ENEMY
+enemy
   id
   name
   life (int)
