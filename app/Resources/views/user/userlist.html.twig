@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Users list</h1>
     <div class="list_users">
-        <table>
+        <table class ="table table-bordered table-stripped table-hover">
             <thead>
             <tr>
                 <th>Username</th>
@@ -17,14 +17,8 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.lastconnect|date('Y-m-d H:i:s') }}</td>
                     <td>
-                        <ul>
-                            <li>
-                                <a href="{{ path('user_show', { 'id': user.id }) }}">show</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('user_edit', { 'id': user.id }) }}">edit</a>
-                            </li>
-                        </ul>
+                        <a href="{{ path('user_edit', { 'id': user.id }) }}">Send a message</a>
+                        <!-- replace by user_message -->
                     </td>
                 </tr>
             {% endfor %}

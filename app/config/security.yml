@@ -42,3 +42,5 @@ security:
 
     access_control:
         - { path: /user, roles: ROLE_ADMIN }
+        - { path: /createCharacter, roles: ROLE_USER }
+        - { path: /seeCharacter, roles: ROLE_USER }

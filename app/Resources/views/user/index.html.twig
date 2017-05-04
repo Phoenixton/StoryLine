@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Users list</h1>
     <div class="list_users">
-        <table>
+        <table class ="table table-bordered table-stripped table-hover">
             <thead>
             <tr>
                 <th>Id</th>
@@ -19,7 +19,7 @@
                 <tr>
                     <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
                     <td>{{ user.username }}</td>
-                    <td>{{ user.password|slice(0,20) }}</td>
+                    <td>{{ user.password|slice(0,20) }} ...</td>
                     <td>{{ user.stamina }}</td>
                     <td>{{ user.lastconnect|date('Y-m-d H:i:s') }}</td>
                     <td>
@@ -37,10 +37,12 @@
             </tbody>
         </table>
 
-        <ul>
-            <li>
-                <a href="{{ path('user_new') }}">Create a new user</a>
-            </li>
-        </ul>
+        <button type="button" id="createUser" class="btn btn-lg btn-primary">Create a new user</button>
+
+        <script type="text/javascript">
+            document.getElementById("createUser").onclick = function () {
+                location.href = "{{ path('user_new') }}";
+            };
+        </script>
     </div>
 {% endblock %}

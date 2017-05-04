@@ -50,6 +50,13 @@ class user implements UserInterface
      */
     private $lastconnect;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="currentCharacter", type="smallint")
+     */
+    private $currentCharacter;
+
 
     /**
      * Get id
@@ -156,6 +163,30 @@ class user implements UserInterface
     public function getLastconnect()
     {
         return $this->lastconnect;
+    }
+
+    /**
+     * Get currentCharacter
+     *
+     * @return int
+     */
+    public function getCurrentCharacter()
+    {
+        return $this->currentCharacter;
+    }
+
+    /**
+     * Set currentCharacter
+     *
+     * @param integer $currentCharacter
+     *
+     * @return user
+     */
+    public function setCurrentCharacter($currentCharacter)
+    {
+        $this->currentCharacter = $currentCharacter;
+
+        return $this;
     }
 
 

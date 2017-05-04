@@ -1,16 +1,16 @@
 <?php
 
-namespace UserBundle\Entity;
+namespace GameBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CHARAC
+ * characters
  *
- * @ORM\Table(name="c_h_a_r_a_c")
- * @ORM\Entity(repositoryClass="UserBundle\Repository\CHARACRepository")
+ * @ORM\Table(name="characters")
+ * @ORM\Entity(repositoryClass="GameBundle\Repository\charactersRepository")
  */
-class CHARAC
+class characters
 {
     /**
      * @var int
@@ -21,10 +21,11 @@ class CHARAC
      */
     private $id;
 
+
     /**
-     * @var int
+     * One character has One user.
      *
-     * @ORM\Column(name="user", type="integer")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\user")
      */
     private $user;
 
@@ -38,16 +39,16 @@ class CHARAC
     /**
      * @var int
      *
-     * @ORM\Column(name="level", type="integer")
+     * @ORM\Column(name="life", type="integer")
      */
-    private $level;
+    private $life;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="life", type="integer")
+     * @ORM\Column(name="level", type="integer")
      */
-    private $life;
+    private $level;
 
     /**
      * @var int
@@ -70,6 +71,12 @@ class CHARAC
      */
     private $class;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="story", type="integer")
+     */
+    private $story;
 
     /**
      * Get id
@@ -86,7 +93,7 @@ class CHARAC
      *
      * @param integer $user
      *
-     * @return CHARAC
+     * @return characters
      */
     public function setUser($user)
     {
@@ -110,7 +117,7 @@ class CHARAC
      *
      * @param string $name
      *
-     * @return CHARAC
+     * @return characters
      */
     public function setName($name)
     {
@@ -130,35 +137,11 @@ class CHARAC
     }
 
     /**
-     * Set level
-     *
-     * @param integer $level
-     *
-     * @return CHARAC
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    /**
-     * Get level
-     *
-     * @return int
-     */
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    /**
      * Set life
      *
      * @param integer $life
      *
-     * @return CHARAC
+     * @return characters
      */
     public function setLife($life)
     {
@@ -178,11 +161,35 @@ class CHARAC
     }
 
     /**
+     * Set level
+     *
+     * @param integer $level
+     *
+     * @return characters
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return int
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
      * Set attack
      *
      * @param integer $attack
      *
-     * @return CHARAC
+     * @return characters
      */
     public function setAttack($attack)
     {
@@ -206,7 +213,7 @@ class CHARAC
      *
      * @param string $race
      *
-     * @return CHARAC
+     * @return characters
      */
     public function setRace($race)
     {
@@ -230,7 +237,7 @@ class CHARAC
      *
      * @param string $class
      *
-     * @return CHARAC
+     * @return characters
      */
     public function setClass($class)
     {
@@ -247,6 +254,30 @@ class CHARAC
     public function getClass()
     {
         return $this->class;
+    }
+
+    /**
+     * Get story
+     *
+     * @return int
+     */
+    public function getStory()
+    {
+        return $this->story;
+    }
+
+    /**
+     * Set story
+     *
+     * @param int $story
+     *
+     * @return characters
+     */
+    public function setStory($story)
+    {
+        $this->story = $story;
+
+        return $this;
     }
 }
 

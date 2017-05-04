@@ -1,0 +1,50 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+
+
+        {% for ent in characters %}
+
+            {% if ent.id is sameas(user.currentCharacter) %}
+            <div class="col panel panel-primary">
+            {% else %}
+            <div class="col panel panel-default">
+            {% endif %}
+                <h3>{{ ent.name }}</h3>
+                <div class="panel-body">
+                    Race : {{ ent.race }}
+                </div>
+                <div class="panel-body">
+                    Class : {{ ent.class }}
+                </div>
+                 <div class="panel-body">
+                    Life : {{ ent.life }}
+                 </div>
+                 <div class="panel-body">
+                    Current Story : {{ ent.story }}
+                </div>
+                 <div class="panel-body">
+                     <a href="/deleteChar/{{ent.id}}" class="btn btn-danger"> Delete a character </a>
+                     <a href="/chooseChar/{{ent.id}}" class="btn btn-success"> Select a character as primary </a>
+                </div>
+            </div>
+
+        {% endfor %}
+        </div>
+
+    </div>
+
+    <button type="button" id="createChar" class="btn btn-lg btn-default">Create a character</button>
+
+    <script type="text/javascript">
+        document.getElementById("createChar").onclick = function () {
+            location.href = "/createCharacter";
+        };
+    </script>
+
+{% endblock %}
