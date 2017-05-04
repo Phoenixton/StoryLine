@@ -14,8 +14,11 @@ CHARACTER
   attack (int)
   race (RACE.name)
   class (CLASS.name)
+  inventory (INVENTORY.id)
+  story (STORY.id)
 
 INVENTORY
+  id
   objects[int] ([OBJECT.id])
 
 OBJECT
@@ -35,7 +38,6 @@ CLASS
 
 STORY
   id
-  character (CHARACTER.id)
   name
   stamina
   reward
@@ -44,9 +46,9 @@ STORY
 ROOM
   id
   enemy (ENEMY.id)
-  reward (OBJECT.id)
-  enemyKilled (bool)
-  rewardTaken (bool)
+  object (OBJECT.id)
+  enemyHere (bool)
+  objectHere (bool)
   visited (bool)
   exit (bool)
   
