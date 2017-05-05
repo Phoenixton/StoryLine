@@ -3,6 +3,9 @@
 namespace AppBundle\Controller;
 
 use GameBundle\Entity\characters;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use UserBundle\Entity\messages;
+use UserBundle\Entity\user;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,7 +91,7 @@ class DefaultController extends Controller
 
         $characters = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM GameBundle:characters e WHERE e.user='.($usr->getId()))
+            ->createQuery('SELECT e FROM GameBundle:characters e WHERE e.user='.($usr->getId()).' AND ORDER BY e.date')
             ->getResult();
 
 
@@ -253,4 +256,99 @@ class DefaultController extends Controller
 
         return $this->redirectToRoute('characterReview');
     }
+
+    /**
+     * Sends a message to another player
+     *
+     * @Route("/sendMessage/{id}", name="user_message")
+     */
+    public function messageAction($id, Request $request)
+    {
+        $this->giveHourlyStamina();
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        $newmessage = new messages;
+
+        $form = $this->createFormBuilder($newmessage)
+            ->add('subject', TextType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
+            ->add('content', TextAreaType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
+            ->add('save', SubmitType::class, array('label' => 'Create', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $subject = $form['subject']->getData();
+            $content = $form['content']->getData();
+            $date = new\DateTime('now');
+
+            $em = $this->getDoctrine()->getManager();
+            $receiver = $em->getRepository('UserBundle:user')
+                ->find($id);
+
+            $newmessage->setSender($usr);
+            $newmessage->setReceiver($receiver);
+            $newmessage->setContent($content);
+            $newmessage->setSubject($subject);
+            $newmessage->setDate($date);
+
+            $em->persist($newmessage);
+
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Message Sent !'
+            );
+
+            return $this->redirectToRoute('listofusers');
+
+        }
+
+        return $this->render('user/createmessage.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+
+    /**
+     * @Route("/messagesReceived", name="displayMessagesReceived")
+     */
+    public function displayMessagesReceivedAction(Request $request)
+    {
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        $messages = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.receiver='.($usr->getId()))
+            ->getResult();
+
+        return $this->render('UserBundle:Messages:displayMessagesReceived.html.twig', array(
+            'messages' => $messages,
+            'user' => $usr
+        ));
+    }
+
+    /**
+     * @Route("/messagesSent", name="displayMessagesSent")
+     */
+    public function displayMessagesSentAction(Request $request)
+    {
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        $messages = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.sender='.($usr->getId()))
+            ->getResult();
+
+        return $this->render('UserBundle:Messages:displayMessagesSent.html.twig', array(
+            'messages' => $messages,
+            'user' => $usr
+        ));
+    }
+
+
 }

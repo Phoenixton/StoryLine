@@ -45,3 +45,4 @@ security:
         - { path: /listofusers, roles: ROLE_USER }
         - { path: /createCharacter, roles: ROLE_USER }
         - { path: /seeCharacter, roles: ROLE_USER }
+        - { path: /sendMessage, roles: ROLE_USER }

@@ -1,0 +1,33 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}See your messages sent!{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+
+            {% for ent in messages %}
+
+                <div class="col panel panel-default">
+
+                    <h3>{{ ent.subject }}</h3>
+
+                    <div> To : <a href="/sendMessage/{{ent.receiver.id}}" class="">{{ ent.receiver.username }}</a> on the : {{ ent.date|date('Y-m-d H:i:s') }}</div>
+                    <div class="panel-body">
+                        Content : {{ ent.content }}
+                    </div>
+
+
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+    <a href="/messagesReceived" class="btn btn-primary"> See the messages you received </a>
+
+
+{% endblock %}
