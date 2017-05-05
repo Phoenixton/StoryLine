@@ -1,0 +1,6 @@
+objects:
+  crown:
+    name: Crown of Glory
+    description: This crown proves your the true King Of Britain. Maybe.
+    attack_bonus: 1
+    life_bonus: 3

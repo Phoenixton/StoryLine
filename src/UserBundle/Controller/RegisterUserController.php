@@ -34,10 +34,13 @@ class RegisterUserController extends Controller
                 //Get the data from the form
                 $username = $form['username']->getData();
                 $password = $form['password']->getData();
+                $now = new\DateTime('now');
 
                 $newUser->setUsername($username);
                 $newUser->setPassword($password);
                 $newUser->setStamina(500);
+                $newUser->setLastconnect($now);
+                $newUser->setCurrentCharacter(0);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($newUser);
                 $em->flush();
