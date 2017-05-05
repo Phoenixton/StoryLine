@@ -1,0 +1,38 @@
+
+{% extends "::base.html.twig" %}
+
+{% block title %}Play the game !{% endblock %}
+
+{% block body %}
+
+    <h1>Inventory of {{ charac.name }}</h1>
+    <div class="list_users">
+        <table class ="table table-bordered table-stripped table-hover">
+            <thead>
+            <tr>
+                <th>Object</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ent in inventory %}
+                <tr>
+                    <td>{{ ent.name }}</td>
+                    <td>{{ ent.description }}</td>
+                    {% if ent.isUsable %}
+                    <td>
+                        <a href="/useObject/{{ ent.id }}" class="btn btn-primary"> Use Object </a>
+
+                        <a href="/deleteObject/{{ ent.id }}" class="btn btn-danger"> Delete Object </a>
+                    </td>
+                    {% else %}
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

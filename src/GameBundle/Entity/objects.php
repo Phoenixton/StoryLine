@@ -57,6 +57,12 @@ class objects
      */
     private $defenseBonus;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isUsable", type="boolean")
+     */
+    private $isUsable;
 
     /**
      * Get id
@@ -187,5 +193,30 @@ class objects
     {
         return $this->defenseBonus;
     }
+
+    /**
+     * Set isUsable
+     *
+     * @param boolean $isUsable
+     *
+     * @return objects
+     */
+    public function setIsUsable($isUsable)
+    {
+        $this->isUsable = $isUsable;
+
+        return $this;
+    }
+
+    /**
+     * Get isUsable
+     *
+     * @return boolean
+     */
+    public function getIsUsable()
+    {
+        return $this->isUsable;
+    }
+
 }
 

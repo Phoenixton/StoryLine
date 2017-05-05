@@ -52,6 +52,13 @@ class DefaultController extends Controller
         }
     }
 
+    public function performStaminaAction() {
+        $em = $this->getDoctrine()->getManager();
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+        $usr->setStamina($usr->getStamina() - 10);
+        $em->flush();
+    }
+
     /**
      * @Route("/", name="homepage")
      */
@@ -419,61 +426,98 @@ class DefaultController extends Controller
 
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
+        if($usr->getStamina() < 10) {
+            $this->addFlash(
+                'error',
+                'You don\'t have enough Stamina to fight !'
+            );
+            return $this->redirectToRoute('play');
+
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+            $this->performStaminaAction();
+            $enemy = $em->getRepository('GameBundle:enemy')
+                ->find($id);
+            $charac = $em->getRepository('GameBundle:characters')
+                ->find($usr->getCurrentCharacter());
+
+            $damagesTaken = 0;
+            $lifeToDefeat = $enemy->getLife();
+            $log = "";
+
+            while(($charac->getLife() - $damagesTaken) > 0) {
+
+                $lifeToDefeat -= ($charac->getAttack() - $enemy->getDefense());
+                $log .= "Le perso a tape pour ".($charac->getAttack() - $enemy->getDefense()).", ";
+                if($lifeToDefeat <= 0) {
+                    break;
+                }
+                $damagesTaken += $enemy->getAttack();
+                $log .= "L'enemy a tape pour ".($enemy->getAttack()).", ";
+
+            }
+
+            if($damagesTaken >= $charac->getLife()) {
+
+                $charac->setLife(0);
+                $em->persist($charac);
+                $em->flush();
+
+                $this->addFlash(
+                    'error',
+                    'You died! Better luck next time! \n '. $log
+                );
+
+                return $this->redirectToRoute('characterReview');
+
+            } else if ($lifeToDefeat <=0){
+
+                $charac->setLife($charac->getLife() - $damagesTaken);
+                $charac->setRoomscompleted($charac->getRoomscompleted() + 1);
+
+                $em->persist($charac);
+
+                $em->flush();
+                //objets
+
+
+            }
+
+            $this->addFlash(
+                'notice',
+                'You Succeeded! Well Played!'.$log
+            );
+            return $this->redirectToRoute('play');
+
+        }
+
+    }
+
+    /**
+     * @Route("/inventory/{id}", name="inventory")
+     */
+    public function displayInventoryOfCharacterAction($id, Request $request)
+    {
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
 
         $em = $this->getDoctrine()->getManager();
-        $enemy = $em->getRepository('GameBundle:enemy')
-            ->find($id);
+
         $charac = $em->getRepository('GameBundle:characters')
             ->find($usr->getCurrentCharacter());
 
-        $damagesTaken = 0;
-        $lifeToDefeat = $enemy->getLife();
-        $log = "";
+        $id = $charac->getId();
 
-        while(($charac->getLife() - $damagesTaken) > 0) {
-
-            $lifeToDefeat -= ($charac->getAttack() - $enemy->getDefense());
-            $log .= "Le perso a tape pour ".($charac->getAttack() - $enemy->getDefense())." \n";
-            if($lifeToDefeat <= 0) {
-                break;
-            }
-            $damagesTaken += $enemy->getAttack();
-            $log .= "L'enemy a tapé pour ".($enemy->getAttack())." \n";
-
-        }
-
-        if($damagesTaken >= $charac->getLife()) {
-
-            $charac->setLife(0);
-            $em->persist($charac);
-            $em->flush();
-
-            $this->addFlash(
-                'error',
-                'You died! Better luck next time! \n '. $log
-            );
-
-            return $this->redirectToRoute('characterReview');
-
-        } else if ($lifeToDefeat <=0){
-
-            $charac->setLife($charac->getLife() - $damagesTaken);
-            $charac->setRoomscompleted($charac->getRoomscompleted() + 1);
-
-            $em->persist($charac);
-
-            $em->flush();
-            //objets
+        $inventory = $this->getDoctrine()
+            ->getManager()
+            ->createQuery("SELECT e FROM GameBundle:belongs b JOIN GameBundle:objects e WITH e.id = b.object WHERE b.user='$id'")
+            ->getResult();
 
 
-        }
-
-        $this->addFlash(
-            'notice',
-            'You Succeeded! Well Played!'.$log
-        );
-        return $this->redirectToRoute('play');
-
+        return $this->render('GameBundle:Characters:inventory.html.twig', array(
+            'charac' => $charac,
+            'inventory' => $inventory
+        ));
     }
 
 }

@@ -23,7 +23,7 @@ class characters
 
 
     /**
-     * One character has One user.
+     * One character has One user, but one user has up to three characters
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\user")
      */
