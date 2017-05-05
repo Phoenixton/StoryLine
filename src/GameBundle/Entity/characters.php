@@ -58,6 +58,13 @@ class characters
     private $attack;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="defense", type="integer")
+     */
+    private $defense;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="race", type="string", length=255)
@@ -77,6 +84,14 @@ class characters
      * @ORM\Column(name="gender", type="string", length=255)
      */
     private $gender;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="roomscompleted", type="integer")
+     */
+    private $roomscompleted;
+
 
     /**
      * @var int
@@ -237,6 +252,54 @@ class characters
     public function getAttack()
     {
         return $this->attack;
+    }
+
+    /**
+     * Set defense
+     *
+     * @param integer $defense
+     *
+     * @return characters
+     */
+    public function setDefense($defense)
+    {
+        $this->defense = $defense;
+
+        return $this;
+    }
+
+    /**
+     * Get defense
+     *
+     * @return int
+     */
+    public function getDefense()
+    {
+        return $this->defense;
+    }
+
+    /**
+     * Set roomscompleted
+     *
+     * @param integer $roomscompleted
+     *
+     * @return characters
+     */
+    public function setRoomscompleted($roomscompleted)
+    {
+        $this->roomscompleted = $roomscompleted;
+
+        return $this;
+    }
+
+    /**
+     * Get roomscompleted
+     *
+     * @return int
+     */
+    public function getRoomscompleted()
+    {
+        return $this->roomscompleted;
     }
 
     /**
