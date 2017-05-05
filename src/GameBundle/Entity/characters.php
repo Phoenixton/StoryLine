@@ -72,6 +72,13 @@ class characters
     private $class;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="gender", type="string", length=255)
+     */
+    private $gender;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="story", type="integer")
@@ -134,6 +141,30 @@ class characters
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param string $gender
+     *
+     * @return characters
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
     }
 
     /**

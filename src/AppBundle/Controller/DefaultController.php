@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DefaultController extends Controller
 {
-    public function giveHourlyStamina(){
+    public function giveDailyStamina(){
 
         $em = $this->getDoctrine()->getManager();
 
@@ -33,7 +33,7 @@ class DefaultController extends Controller
                     $usr->setStamina($usr->getStamina() + 10);
                     $em->flush();
                     //?
-                } else if(new \DateTime($usr->getLastconnect()->format('Y-m-d H:i')) < new \DateTime((new \DateTime("now"))->format('Y-m-d H:i'))){
+                } else if(new \DateTime($usr->getLastconnect()->format('Y-m-d')) < new \DateTime((new \DateTime("now"))->format('Y-m-d'))){
 
                     $usr->setStamina($usr->getStamina() + 10);
                     $em->flush();
@@ -58,7 +58,7 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
 
-        $this->giveHourlyStamina();
+        $this->giveDailyStamina();
 
         return $this->render('AppBundle:HomePage:home.html.twig');
 
@@ -73,7 +73,7 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $this->giveHourlyStamina();
+        $this->giveDailyStamina();
 
         $users = $em->getRepository('UserBundle:user')->findAll();
 
@@ -91,7 +91,7 @@ class DefaultController extends Controller
 
         $characters = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM GameBundle:characters e WHERE e.user='.($usr->getId()).' AND ORDER BY e.date')
+            ->createQuery('SELECT e FROM GameBundle:characters e WHERE e.user='.($usr->getId()))
             ->getResult();
 
 
@@ -105,7 +105,7 @@ class DefaultController extends Controller
 
         } else {
 
-            $this->giveHourlyStamina();
+            $this->giveDailyStamina();
 
             $usr= $this->get('security.token_storage')->getToken()->getUser();
 
@@ -113,6 +113,7 @@ class DefaultController extends Controller
 
             $form = $this->createFormBuilder($newcharac)
                 ->add('name', TextType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
+                ->add('gender', ChoiceType::class, array('choices' => array('Male' => 'Male', 'Female' => 'Female'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
                 ->add('race', ChoiceType::class, array('choices' => array('Human' => 'Human', 'Troll' => 'Troll', 'Dwarf' => 'Dwarf', 'Elf' => 'Elf'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
                 ->add('class', ChoiceType::class, array('choices' => array('Thief' => 'Thief', 'Warrior' => 'Warrior', 'Mage' => 'Mage', 'Merchant' => 'Merchant'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
                 ->add('save', SubmitType::class, array('label' => 'Create', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
@@ -123,12 +124,14 @@ class DefaultController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 //Get the data from the form
                 $name = $form['name']->getData();
+                $gender = $form['gender']->getData();
                 $race = $form['race']->getData();
                 $class = $form['class']->getData();
                 //$now = new\DateTime('now');
 
                 $newcharac->setUser($usr);
                 $newcharac->setName($name);
+                $newcharac->setGender($gender);
                 $newcharac->setRace($race);
                 $newcharac->setClass($class);
                 $newcharac->setLevel(1);
@@ -264,7 +267,7 @@ class DefaultController extends Controller
      */
     public function messageAction($id, Request $request)
     {
-        $this->giveHourlyStamina();
+        $this->giveDailyStamina();
 
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
@@ -318,11 +321,12 @@ class DefaultController extends Controller
     public function displayMessagesReceivedAction(Request $request)
     {
 
+        $this->giveDailyStamina();
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
         $messages = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.receiver='.($usr->getId()))
+            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.receiver='.($usr->getId()).' ORDER BY e.date')
             ->getResult();
 
         return $this->render('UserBundle:Messages:displayMessagesReceived.html.twig', array(
@@ -337,11 +341,12 @@ class DefaultController extends Controller
     public function displayMessagesSentAction(Request $request)
     {
 
+        $this->giveDailyStamina();
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
         $messages = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.sender='.($usr->getId()))
+            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.sender='.($usr->getId()).' ORDER BY e.date')
             ->getResult();
 
         return $this->render('UserBundle:Messages:displayMessagesSent.html.twig', array(

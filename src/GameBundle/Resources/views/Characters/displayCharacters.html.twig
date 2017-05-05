@@ -15,25 +15,43 @@
             {% else %}
             <div class="col panel panel-default">
             {% endif %}
-                <h3>{{ ent.name }}</h3>
-                <div class="panel-body">
-                    Race : {{ ent.race }}
-                </div>
-                <div class="panel-body">
-                    Class : {{ ent.class }}
-                </div>
-                 <div class="panel-body">
-                    Life : {{ ent.life }}
+                <div class="panel-heading">{{ ent.name }}</div>
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-5">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">Informations</div>
+
+                                <div class="panel-body">
+                                    Gender : {{ ent.gender }}
+                                </div>
+                                <div class="panel-body">
+                                    Race : {{ ent.race }}
+                                </div>
+                                <div class="panel-body">
+                                    Class : {{ ent.class }}
+                                </div>
+                                <div class="panel-body">
+                                    Life : {{ ent.life }}
+                                </div>
+                                <div class="panel-body">
+                                    Current Story : {{ ent.story }}
+                                </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-7">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">Inventory</div>
+                        </div>
+                    </div>
+
                  </div>
-                 <div class="panel-body">
-                    Current Story : {{ ent.story }}
-                </div>
-                 <div class="panel-body">
-                     <a href="/deleteChar/{{ent.id}}" class="btn btn-danger"> Delete a character </a>
-                     <a href="/chooseChar/{{ent.id}}" class="btn btn-success"> Select a character as primary </a>
+                <div class="panel-body">
+                    <a href="/deleteChar/{{ent.id}}" class="btn btn-danger"> Delete a character </a>
+                    <a href="/chooseChar/{{ent.id}}" class="btn btn-success"> Select a character as primary </a>
                 </div>
             </div>
-
         {% endfor %}
         </div>
 
@@ -48,3 +66,4 @@
     </script>
 
 {% endblock %}
+
