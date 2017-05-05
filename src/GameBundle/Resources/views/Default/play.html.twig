@@ -1,0 +1,14 @@
+
+{% extends "::base.html.twig" %}
+
+{% block title %}Play the game !{% endblock %}
+
+{% block body %}
+
+    <div> Le nom de votre ennemi est : {{ enemy.name }} avec {{ enemy.life }}</div>
+    <div> Votre perso {{ charac.name }} a : {{ charac.life }}</div>
+    <div> rooms completed : {{ charac.roomscompleted }}</div>
+    <a href="/fight/{{ enemy.id }}" id="fight">Fight</a>
+    <a id="run">Run</a>
+
+{% endblock %}

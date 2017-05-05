@@ -138,19 +138,24 @@ class DefaultController extends Controller
                 $newcharac->setStory(10);
 
                 $attack = 0;
+                $defense =0;
                 $life = 0;
 
                 if($race == 'Human') {
                     $attack = 30;
+                    $defense = 15;
                     $life = 10;
                 } else if($race == 'Troll') {
                     $attack = 25;
+                    $defense = 18;
                     $life = 15;
                 } else if($race == 'Dwarf') {
                     $attack = 32;
+                    $defense = 20;
                     $life = 11;
                 } else if($race == 'Elf') {
                     $attack = 20;
+                    $defense = 11;
                     $life = 12;
                 } else {
 
@@ -160,6 +165,7 @@ class DefaultController extends Controller
                     $life += 2;
                 } else if($class == 'Warrior') {
                     $attack += 5;
+                    $defense += 2;
                 } else if($class == 'Magician') {
                     $life -= 3;
                 } else if($class == 'Merchant') {
@@ -170,7 +176,8 @@ class DefaultController extends Controller
 
                 $newcharac->setLife($life);
                 $newcharac->setAttack($attack);
-
+                $newcharac->setDefense($defense);
+                $newcharac->setRoomscompleted(0);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($newcharac);
 
@@ -355,5 +362,118 @@ class DefaultController extends Controller
         ));
     }
 
+
+    /**
+     * @Route("/play", name="play")
+     */
+    public function playAction(Request $request) {
+
+        $this->giveDailyStamina();
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+
+        if($usr->getCurrentCharacter() == 0) {
+
+            $this->addFlash(
+                'error',
+                'You have to select a character !'
+            );
+
+            return $this->redirectToRoute('characterReview');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $charac = $em->getRepository('GameBundle:characters')
+            ->find($usr->getCurrentCharacter());
+
+        if($charac->getLife() <= 0) {
+            $this->addFlash(
+                'error',
+                'You can\'t play with this character, leave the dead alone!'
+            );
+
+            return $this->redirectToRoute('characterReview');
+        } else {
+
+
+            $enemy_id = rand(1,2);
+            $em = $this->getDoctrine()->getManager();
+            $enemy = $em->getRepository('GameBundle:enemy')
+                ->find($enemy_id);
+
+
+            return $this->render('GameBundle:Default:play.html.twig', array(
+                        'enemy' => $enemy,
+                        'charac' => $charac
+            ));
+        }
+
+
+    }
+
+    /**
+     * @Route("/fight/{id}", name="fight")
+     */
+    public function fightAction($id, Request $request) {
+
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+
+        $em = $this->getDoctrine()->getManager();
+        $enemy = $em->getRepository('GameBundle:enemy')
+            ->find($id);
+        $charac = $em->getRepository('GameBundle:characters')
+            ->find($usr->getCurrentCharacter());
+
+        $damagesTaken = 0;
+        $lifeToDefeat = $enemy->getLife();
+        $log = "";
+
+        while(($charac->getLife() - $damagesTaken) > 0) {
+
+            $lifeToDefeat -= ($charac->getAttack() - $enemy->getDefense());
+            $log .= "Le perso a tape pour ".($charac->getAttack() - $enemy->getDefense())." \n";
+            if($lifeToDefeat <= 0) {
+                break;
+            }
+            $damagesTaken += $enemy->getAttack();
+            $log .= "L'enemy a tapé pour ".($enemy->getAttack())." \n";
+
+        }
+
+        if($damagesTaken >= $charac->getLife()) {
+
+            $charac->setLife(0);
+            $em->persist($charac);
+            $em->flush();
+
+            $this->addFlash(
+                'error',
+                'You died! Better luck next time! \n '. $log
+            );
+
+            return $this->redirectToRoute('characterReview');
+
+        } else if ($lifeToDefeat <=0){
+
+            $charac->setLife($charac->getLife() - $damagesTaken);
+            $charac->setRoomscompleted($charac->getRoomscompleted() + 1);
+
+            $em->persist($charac);
+
+            $em->flush();
+            //objets
+
+
+        }
+
+        $this->addFlash(
+            'notice',
+            'You Succeeded! Well Played!'.$log
+        );
+        return $this->redirectToRoute('play');
+
+    }
 
 }
