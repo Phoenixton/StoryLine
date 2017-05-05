@@ -51,6 +51,14 @@ class objects
 
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="defensebonus", type="integer")
+     */
+    private $defenseBonus;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -154,6 +162,30 @@ class objects
     public function getLifeBonus()
     {
         return $this->lifeBonus;
+    }
+
+    /**
+     * Set defenseBonus
+     *
+     * @param integer $defenseBonus
+     *
+     * @return objects
+     */
+    public function setDefenseBonus($defenseBonus)
+    {
+        $this->defenseBonus = $defenseBonus;
+
+        return $this;
+    }
+
+    /**
+     * Get defenseBonus
+     *
+     * @return int
+     */
+    public function getDefenseBonus()
+    {
+        return $this->defenseBonus;
     }
 }
 
