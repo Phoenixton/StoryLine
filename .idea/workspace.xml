@@ -22,31 +22,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
+      <file leaf-file-name="objects.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/objects.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.73077">
-              <caret line="512" column="116" selection-start-line="512" selection-start-column="116" selection-end-line="512" selection-end-column="116" />
-              <folding>
-                <element signature="e#40#73#0#PHP" expanded="true" />
-                <marker date="1494025369903" expanded="true" signature="3109:3160" placeholder="SELECT e FRO..GameBundle..." />
-                <marker date="1494025369903" expanded="true" signature="7604:7655" placeholder="SELECT e FRO..GameBundle..." />
-                <marker date="1494025369903" expanded="true" signature="11398:11486" placeholder="SELECT e FRO..UserBundle..." />
-                <marker date="1494025369903" expanded="true" signature="12045:12131" placeholder="SELECT e FRO..UserBundle..." />
-                <marker date="1494025369903" expanded="true" signature="16309:16404" placeholder="SELECT e FRO..GameBundle..." />
-                <marker date="1494025369903" expanded="true" signature="16309:16406" placeholder="SELECT e FRO..GameBundle..." />
-                <marker date="1494025369903" expanded="true" signature="16309:16409" placeholder="SELECT e FRO..GameBundle..." />
-              </folding>
+            <state vertical-scroll-proportion="-108.53846">
+              <caret line="211" column="19" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="objects.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/objects.php">
+      <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-132.07692">
-              <caret line="211" column="19" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
-              <folding />
+            <state vertical-scroll-proportion="-21.692308">
+              <caret line="229" column="60" selection-start-line="229" selection-start-column="60" selection-end-line="229" selection-end-column="60" />
+              <folding>
+                <element signature="e#40#73#0#PHP" expanded="true" />
+                <marker date="1494031812560" expanded="true" signature="3109:3160" placeholder="SELECT e FRO..GameBundle..." />
+                <marker date="1494031812560" expanded="true" signature="7604:7655" placeholder="SELECT e FRO..GameBundle..." />
+                <marker date="1494031812560" expanded="true" signature="7799:7859" placeholder="SELECT e FRO..GameBundle..." />
+                <marker date="1494031812560" expanded="true" signature="7799:7880" placeholder="SELECT b FRO..GameBundle..." />
+                <marker date="1494031812560" expanded="true" signature="9410:9463" placeholder="DELETE FROM ..." />
+                <marker date="1494031812560" expanded="true" signature="12037:12125" placeholder="SELECT e FRO..UserBundle..." />
+                <marker date="1494031812560" expanded="true" signature="12684:12770" placeholder="SELECT e FRO..UserBundle..." />
+                <marker date="1494031812560" expanded="true" signature="16948:17053" placeholder="SELECT e FRO..GameBundle..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -54,28 +55,28 @@
       <file leaf-file-name="belongs.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/belongs.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.846154">
-              <caret line="28" column="17" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="17" />
+            <state vertical-scroll-proportion="-17.5">
+              <caret line="28" column="22" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="inventory.html.twig" pinned="false" current-in-tab="true">
+      <file leaf-file-name="inventory.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/inventory.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.13019694">
-              <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+            <state vertical-scroll-proportion="-11.769231">
+              <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="displayCharacters.html.twig" pinned="false" current-in-tab="false">
+      <file leaf-file-name="displayCharacters.html.twig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/displayCharacters.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="11" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.3894967">
+              <caret line="48" column="62" selection-start-line="48" selection-start-column="62" selection-end-line="48" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -84,9 +85,15 @@
       <file leaf-file-name="UserController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="11.115385">
-              <caret line="5" column="27" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="27" />
-              <folding />
+            <state vertical-scroll-proportion="-19.73077">
+              <caret line="139" column="41" selection-start-line="139" selection-start-column="41" selection-end-line="139" selection-end-column="41" />
+              <folding>
+                <element signature="e#42#69#0#PHP" expanded="true" />
+                <marker date="1494028487181" expanded="true" signature="3858:3911" placeholder="DELETE FROM ..." />
+                <marker date="1494028487181" expanded="true" signature="3858:3923" placeholder="DELETE FROM ..." />
+                <marker date="1494028487181" expanded="true" signature="4069:4125" placeholder="DELETE FROM ..." />
+                <marker date="1494028487181" expanded="true" signature="4255:4333" placeholder="DELETE FROM ..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -124,7 +131,7 @@
       <file leaf-file-name="characters.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/characters.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="35.307693">
+            <state vertical-scroll-proportion="-5.8846154">
               <caret line="27" column="7" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="60" />
               <folding />
             </state>
@@ -171,13 +178,11 @@
         <option value="$PROJECT_DIR$/src/UserBundle/Resources/views/Security/login.html.twig" />
         <option value="$PROJECT_DIR$/src/UserBundle/Resources/views/RegisterPage/signUp.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/user/index.html.twig" />
-        <option value="$PROJECT_DIR$/src/UserBundle/Controller/UserController.php" />
         <option value="$PROJECT_DIR$/app/config/security.yml" />
         <option value="$PROJECT_DIR$/app/Resources/views/user/userlist.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/user/createmessage.html.twig" />
         <option value="$PROJECT_DIR$/src/UserBundle/Resources/views/Messages/displayMessages.html.twig" />
         <option value="$PROJECT_DIR$/src/UserBundle/Entity/messages.php" />
-        <option value="$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/displayCharacters.html.twig" />
         <option value="$PROJECT_DIR$/src/UserBundle/Resources/views/Messages/displayMessagesSent.html.twig" />
         <option value="$PROJECT_DIR$/src/UserBundle/Controller/RegisterUserController.php" />
         <option value="$PROJECT_DIR$/data/fixtures/objects.yaml" />
@@ -191,9 +196,11 @@
         <option value="$PROJECT_DIR$/src/GameBundle/Resources/views/Default/play.html.twig" />
         <option value="$PROJECT_DIR$/src/GameBundle/Entity/objects.php" />
         <option value="$PROJECT_DIR$/src/GameBundle/Entity/characters.php" />
-        <option value="$PROJECT_DIR$/src/GameBundle/Entity/belongs.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" />
         <option value="$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/inventory.html.twig" />
+        <option value="$PROJECT_DIR$/src/GameBundle/Entity/belongs.php" />
+        <option value="$PROJECT_DIR$/src/UserBundle/Controller/UserController.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" />
+        <option value="$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/displayCharacters.html.twig" />
       </list>
     </option>
   </component>
@@ -1280,22 +1287,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/UserController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="11.115385">
-          <caret line="5" column="27" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/displayCharacters.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="11" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/user/userlist.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-18.307692">
@@ -1304,25 +1295,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/belongs.php">
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.846154">
-          <caret line="28" column="17" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="17" />
-          <folding />
+        <state vertical-scroll-proportion="-19.73077">
+          <caret line="139" column="41" selection-start-line="139" selection-start-column="41" selection-end-line="139" selection-end-column="41" />
+          <folding>
+            <element signature="e#42#69#0#PHP" expanded="true" />
+            <marker date="1494028487181" expanded="true" signature="3858:3911" placeholder="DELETE FROM ..." />
+            <marker date="1494028487181" expanded="true" signature="3858:3923" placeholder="DELETE FROM ..." />
+            <marker date="1494028487181" expanded="true" signature="4069:4125" placeholder="DELETE FROM ..." />
+            <marker date="1494028487181" expanded="true" signature="4255:4333" placeholder="DELETE FROM ..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/characters.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="35.307693">
+        <state vertical-scroll-proportion="-5.8846154">
           <caret line="27" column="7" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/inventory.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.769231">
+          <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/objects.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-132.07692">
+        <state vertical-scroll-proportion="-108.53846">
           <caret line="211" column="19" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
           <folding />
         </state>
@@ -1330,25 +1335,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.73077">
-          <caret line="512" column="116" selection-start-line="512" selection-start-column="116" selection-end-line="512" selection-end-column="116" />
+        <state vertical-scroll-proportion="-21.692308">
+          <caret line="229" column="60" selection-start-line="229" selection-start-column="60" selection-end-line="229" selection-end-column="60" />
           <folding>
             <element signature="e#40#73#0#PHP" expanded="true" />
-            <marker date="1494025369903" expanded="true" signature="3109:3160" placeholder="SELECT e FRO..GameBundle..." />
-            <marker date="1494025369903" expanded="true" signature="7604:7655" placeholder="SELECT e FRO..GameBundle..." />
-            <marker date="1494025369903" expanded="true" signature="11398:11486" placeholder="SELECT e FRO..UserBundle..." />
-            <marker date="1494025369903" expanded="true" signature="12045:12131" placeholder="SELECT e FRO..UserBundle..." />
-            <marker date="1494025369903" expanded="true" signature="16309:16404" placeholder="SELECT e FRO..GameBundle..." />
-            <marker date="1494025369903" expanded="true" signature="16309:16406" placeholder="SELECT e FRO..GameBundle..." />
-            <marker date="1494025369903" expanded="true" signature="16309:16409" placeholder="SELECT e FRO..GameBundle..." />
+            <marker date="1494031812560" expanded="true" signature="3109:3160" placeholder="SELECT e FRO..GameBundle..." />
+            <marker date="1494031812560" expanded="true" signature="7604:7655" placeholder="SELECT e FRO..GameBundle..." />
+            <marker date="1494031812560" expanded="true" signature="7799:7859" placeholder="SELECT e FRO..GameBundle..." />
+            <marker date="1494031812560" expanded="true" signature="7799:7880" placeholder="SELECT b FRO..GameBundle..." />
+            <marker date="1494031812560" expanded="true" signature="9410:9463" placeholder="DELETE FROM ..." />
+            <marker date="1494031812560" expanded="true" signature="12037:12125" placeholder="SELECT e FRO..UserBundle..." />
+            <marker date="1494031812560" expanded="true" signature="12684:12770" placeholder="SELECT e FRO..UserBundle..." />
+            <marker date="1494031812560" expanded="true" signature="16948:17053" placeholder="SELECT e FRO..GameBundle..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/inventory.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/GameBundle/Entity/belongs.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13019694">
-          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+        <state vertical-scroll-proportion="-17.5">
+          <caret line="28" column="22" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GameBundle/Resources/views/Characters/displayCharacters.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3894967">
+          <caret line="48" column="62" selection-start-line="48" selection-start-column="62" selection-end-line="48" selection-end-column="62" />
           <folding />
         </state>
       </provider>

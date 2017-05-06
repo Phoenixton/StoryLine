@@ -7,6 +7,7 @@ use UserBundle\Entity\user;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -124,6 +125,32 @@ class UserController extends Controller
     {
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
+
+        $id = $user->getId();
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $characs = $em->getRepository('GameBundle:characters')->findBy(array(
+            'user' => $id
+        ));
+
+        foreach ($characs as $value) {
+            //deletes the inventory of his characters
+            $id_charac = $value->getId();
+            $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.character = '$id_charac'");
+            $query->execute();
+        }
+
+
+        //deletes his characters
+        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:characters e WHERE e.user = '$id'");
+        $query->execute();
+
+
+        //deletes his messages
+        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM UserBundle:messages e WHERE e.sender = '$id' OR e.receiver = '$id'");
+        $query->execute();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();

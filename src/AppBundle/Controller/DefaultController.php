@@ -219,8 +219,21 @@ class DefaultController extends Controller
             ->createQuery('SELECT e FROM GameBundle:characters e WHERE e.user='.($usr->getId()))
             ->getResult();
 
+        $belongings = $this->getDoctrine()
+            ->getManager()
+            ->createQuery("SELECT b FROM GameBundle:belongs b JOIN GameBundle:objects e WITH e.id = b.object")
+            ->getResult();
+
+
+        $em = $this->getDoctrine()->getManager();
+
+        $belongings = $em->getRepository('GameBundle:belongs')->findAll();
+        $objects = $em->getRepository('GameBundle:objects')->findAll();
+
         return $this->render('GameBundle:Characters:displayCharacters.html.twig', array(
             'characters' => $characters,
+            'belongings' => $belongings,
+            'objects' => $objects,
             'user' => $usr
         ));
     }
@@ -258,6 +271,12 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $charac = $em->getRepository('GameBundle:characters')
             ->find($id);
+
+
+
+        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.user = '$id'");
+        $query->execute();
+
 
         if($usr->getCurrentCharacter() == $id) {
             $usr->setCurrentCharacter(0);
@@ -510,7 +529,7 @@ class DefaultController extends Controller
 
         $inventory = $this->getDoctrine()
             ->getManager()
-            ->createQuery("SELECT e FROM GameBundle:belongs b JOIN GameBundle:objects e WITH e.id = b.object WHERE b.user='$id'")
+            ->createQuery("SELECT e FROM GameBundle:belongs b JOIN GameBundle:objects e WITH e.id = b.object WHERE b.character='$id'")
             ->getResult();
 
 

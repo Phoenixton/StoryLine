@@ -24,9 +24,9 @@ class belongs
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\user")
+     * @ORM\ManyToOne(targetEntity="GameBundle\Entity\characters")
      */
-    private $user;
+    private $character;
 
     /**
      * @var int
@@ -47,27 +47,27 @@ class belongs
     }
 
     /**
-     * Set user
+     * Set character
      *
-     * @param integer $user
+     * @param integer $character
      *
      * @return belongs
      */
-    public function setUser($user)
+    public function setCharacter($character)
     {
-        $this->user = $user;
+        $this->character = $character;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get character
      *
      * @return int
      */
-    public function getUser()
+    public function getCharacter()
     {
-        return $this->user;
+        return $this->character;
     }
 
     /**

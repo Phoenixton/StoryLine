@@ -37,12 +37,23 @@
                                     Current Story : {{ ent.story }}
                                 </div>
 
-
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-7">
                         <div class="panel panel-success">
                             <div class="panel-heading">Inventory</div>
+
+                            {% for belong in belongings %}
+                                {% if belong.character.id == ent.id %}
+                                    {% for obj in objects %}
+                                        {% if belong.object.id is sameas(obj.id) %}
+                                            <div class="panel-body">
+                                                Object : {{ obj.name }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
 
