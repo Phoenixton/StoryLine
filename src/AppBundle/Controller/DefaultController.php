@@ -83,9 +83,11 @@ class DefaultController extends Controller
         $this->giveDailyStamina();
 
         $users = $em->getRepository('UserBundle:user')->findAll();
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         return $this->render('user/userlist.html.twig', array(
             'users' => $users,
+            'currentUser' => $currentUser
         ));
     }
 
