@@ -6,29 +6,37 @@
 {% block body %}
 
     <h1>Inventory of {{ charac.name }}</h1>
+     <h3>Life : {{ charac.life }}, Attack : {{ charac.attack }}, Defense : {{ charac.defense }}</h3>
     <div class="list_users">
         <table class ="table table-bordered table-stripped table-hover">
             <thead>
             <tr>
-                <th>Object</th>
+                <th>Object {{ number }}</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for ent in inventory %}
-                <tr>
-                    <td>{{ ent.name }}</td>
-                    <td>{{ ent.description }}</td>
-                    {% if ent.isUsable %}
-                    <td>
-                        <a href="/useObject/{{ ent.id }}" class="btn btn-primary"> Use Object </a>
+            {% for ent in belongings %}
+                {% if ent.character.id == charac.id %}
+                    {% for obj in list %}
+                        <tr>
+                        {% if obj.id is sameas(ent.object.id) %}
+                            <td>{{ obj.name }}</td>
+                            <td>{{ obj.description }}</td>
+                                    <td>
+                                {% if obj.isUsable %}
 
-                        <a href="/deleteObject/{{ ent.id }}" class="btn btn-danger"> Delete Object </a>
-                    </td>
-                    {% else %}
-                    {% endif %}
-                </tr>
+                                        <a href="/useObject/{{ obj.id }}" class="btn btn-primary"> Use Object </a>
+
+
+                                {% endif %}
+                                        <a href="/deleteObject/{{ obj.id }}" class="btn btn-danger"> Delete Object </a>
+                                    </td>
+                        {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>

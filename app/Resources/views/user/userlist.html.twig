@@ -19,6 +19,7 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.lastconnect|date('Y-m-d H:i:s') }}</td>
                     {% if user.id is sameas(currentUser.id) %}
+                        <td></td>
                     {% else %}
                     <td>
                         <a href="/sendMessage/{{user.id}}" class="btn btn-primary"> Send a message to a player </a>

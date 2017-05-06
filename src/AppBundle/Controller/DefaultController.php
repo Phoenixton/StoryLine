@@ -122,9 +122,9 @@ class DefaultController extends Controller
 
             $form = $this->createFormBuilder($newcharac)
                 ->add('name', TextType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
-                ->add('gender', ChoiceType::class, array('choices' => array('Male' => 'Male', 'Female' => 'Female'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
-                ->add('race', ChoiceType::class, array('choices' => array('Human' => 'Human', 'Troll' => 'Troll', 'Dwarf' => 'Dwarf', 'Elf' => 'Elf'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
-                ->add('class', ChoiceType::class, array('choices' => array('Thief' => 'Thief', 'Warrior' => 'Warrior', 'Mage' => 'Mage', 'Merchant' => 'Merchant'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
+                ->add('gender', ChoiceType::class, array('choices' => array('Male' => 'Male', 'Female' => 'Female'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px; height: auto;')))
+                ->add('race', ChoiceType::class, array('choices' => array('Human' => 'Human', 'Troll' => 'Troll', 'Dwarf' => 'Dwarf', 'Elf' => 'Elf'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px; height: auto;')))
+                ->add('class', ChoiceType::class, array('choices' => array('Thief' => 'Thief', 'Warrior' => 'Warrior', 'Mage' => 'Mage', 'Merchant' => 'Merchant'), 'attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px; height: auto;')))
                 ->add('save', SubmitType::class, array('label' => 'Create', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
                 ->getForm();
 
@@ -597,17 +597,104 @@ class DefaultController extends Controller
             ->find($usr->getCurrentCharacter());
 
         $id = $charac->getId();
+//
+//        $inventory = $this->getDoctrine()
+//            ->getManager()
+//            ->createQuery("SELECT e FROM GameBundle:belongs b JOIN GameBundle:objects e WITH e.id = b.object WHERE b.character='$id'")
+//            ->getResult();
 
-        $inventory = $this->getDoctrine()
-            ->getManager()
-            ->createQuery("SELECT e FROM GameBundle:belongs b JOIN GameBundle:objects e WITH e.id = b.object WHERE b.character='$id'")
-            ->getResult();
+        $belongings = $em->getRepository('GameBundle:belongs')->findAll();
 
+        $list = $em->getRepository('GameBundle:objects')->findAll();
+        $number = count($belongings);
 
         return $this->render('GameBundle:Characters:inventory.html.twig', array(
             'charac' => $charac,
-            'inventory' => $inventory
+            'belongings' => $belongings,
+            'list' => $list,
+            'number' => $number
         ));
+    }
+
+
+    /**
+     *
+     * @Route("/useObject/{id}", name="useObject")
+     */
+    public function useObjectAction($id, Request $request) {
+
+
+        $em = $this->getDoctrine()->getManager();
+        //remove the object from inventory
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+        $characId = $usr->getCurrentCharacter();
+
+        $query = $this->getDoctrine()
+            ->getManager()
+            ->createQuery("SELECT e FROM GameBundle:belongs e WHERE e.character = '$characId' AND e.object='$id'")
+            ->getResult();
+
+
+        //use the object
+        $charac = $em->getRepository('GameBundle:characters')
+            ->find($usr->getCurrentCharacter());
+
+        $object = $em->getRepository('GameBundle:objects')
+            ->find($query[0]->getObject());
+
+
+        $newLife = $charac->getLife() + $object->getLifeBonus();
+        $newAttack = $charac->getAttack() + $object->getAttackBonus();
+        $newDefense = $charac->getDefense() + $object->getDefenseBonus();
+        $charac->setLife($newLife);
+        $charac->setAttack($newAttack);
+        $charac->setDefense($newDefense);
+
+        $em->persist($charac);
+
+        //remove it from the inventory
+        $em->remove($query[0]);
+        $em->flush();
+
+
+
+
+        $this->addFlash(
+            'notice',
+            'You used the object'
+        );
+        return $this->redirectToRoute('inventory', array('id' => $characId));
+
+    }
+
+    /**
+     *
+     * @Route("/deleteObject/{id}", name="deleteObject")
+     */
+    public function deleteObjectAction($id, Request $request) {
+
+
+        $em = $this->getDoctrine()->getManager();
+        //remove the object from inventory
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+        $characId = $usr->getCurrentCharacter();
+
+        $query = $this->getDoctrine()
+            ->getManager()
+            ->createQuery("SELECT e FROM GameBundle:belongs e WHERE e.character = '$characId' AND e.object='$id'")
+            ->getResult();
+
+        //remove it from the inventory
+        $em->remove($query[0]);
+        $em->flush();
+
+
+        $this->addFlash(
+            'notice',
+            'You deleted the object'
+        );
+        return $this->redirectToRoute('inventory', array('id' => $characId));
+
     }
 
 }
