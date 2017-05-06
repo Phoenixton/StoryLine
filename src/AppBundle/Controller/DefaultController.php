@@ -8,6 +8,7 @@ use UserBundle\Entity\messages;
 use UserBundle\Entity\user;
 use GameBundle\Entity\belongs;
 use GameBundle\Entity\objects;
+use GameBundle\Entity\logs;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DefaultController extends Controller
 {
+
     public function giveDailyStamina(){
 
         $em = $this->getDoctrine()->getManager();
@@ -54,10 +56,10 @@ class DefaultController extends Controller
         }
     }
 
-    public function performStaminaAction() {
+    public function performStaminaAction($number) {
         $em = $this->getDoctrine()->getManager();
         $usr= $this->get('security.token_storage')->getToken()->getUser();
-        $usr->setStamina($usr->getStamina() - 10);
+        $usr->setStamina($usr->getStamina() - $number);
         $em->flush();
     }
 
@@ -209,6 +211,12 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($newcharac);
 
+                $characterLog = new logs;
+                $characterLog->setCharac($newcharac);
+                $characterLog->setLog("");
+                $em->persist($characterLog);
+
+
                 $em->flush();
 
                 $this->addFlash(
@@ -297,7 +305,8 @@ class DefaultController extends Controller
 
         $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.character = '$id'");
         $query->execute();
-
+        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:logs e WHERE e.character = '$id'");
+        $query->execute();
 
         if($usr->getCurrentCharacter() == $id) {
             $usr->setCurrentCharacter(0);
@@ -328,6 +337,17 @@ class DefaultController extends Controller
         //deletes the character's belongings
         $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.character = '$id'");
         $query->execute();
+
+
+        $row = $this->getDoctrine()
+            ->getManager()
+            ->createQuery("SELECT e FROM GameBundle:logs e WHERE e.charac = '$id'")
+            ->getResult();
+
+        $log_charac = $row[0];
+        $log_charac->setLog("");
+        $em->persist($log_charac);
+
 
         $attack = 0;
         $defense =0;
@@ -484,6 +504,7 @@ class DefaultController extends Controller
      */
     public function playAction(Request $request) {
 
+
         $this->giveDailyStamina();
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
@@ -502,6 +523,15 @@ class DefaultController extends Controller
         $charac = $em->getRepository('GameBundle:characters')
             ->find($usr->getCurrentCharacter());
 
+        $characId = $charac->getId();
+
+        $row = $this->getDoctrine()
+            ->getManager()
+            ->createQuery("SELECT e FROM GameBundle:logs e WHERE e.charac = '$characId'")
+            ->getResult();
+
+        $log_charac = $row[0]->getLog();
+        $logToDisplay = explode("|", $log_charac);
         if($charac->getLife() <= 0) {
             $this->addFlash(
                 'error',
@@ -520,7 +550,8 @@ class DefaultController extends Controller
 
             return $this->render('GameBundle:Default:play.html.twig', array(
                         'enemy' => $enemy,
-                        'charac' => $charac
+                        'charac' => $charac,
+                        'log' => $logToDisplay
             ));
         }
 
@@ -528,6 +559,73 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/run", name="run")
+     */
+    public function runAction(Request $request) {
+
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        if($usr->getStamina() < 20) {
+            $this->addFlash(
+                'error',
+                'You don\'t have enough Stamina to run away !'
+            );
+            return $this->redirectToRoute('play');
+
+        }
+
+        $this->performStaminaAction(20);
+
+        $random = rand(1,10);
+        //$log = "";
+
+        $em = $this->getDoctrine()->getManager();
+
+        $charac = $em->getRepository('GameBundle:characters')
+            ->find($usr->getCurrentCharacter());
+        $characId = $charac->getId();
+
+        $logCharac = $this->getDoctrine()
+            ->getManager()
+            ->createQuery("SELECT e FROM GameBundle:logs e WHERE e.charac = '$characId'")
+            ->getResult();
+
+        $oldLog = $logCharac[0]->getLog();
+
+
+        if($random <= 4) {
+            //$log.= " Unfortunately, you lost".$random." hp while cowardly making your escape...";
+
+            $logCharac[0]->setLog(" Unfortunately, you lost".$random." hp while cowardly making your escape... | ".$oldLog);
+            $em->persist($logCharac[0]);
+//            $charac = $em->getRepository('GameBundle:characters')
+//                ->find($usr->getCurrentCharacter());
+
+            $currentLife = $charac->getLife();
+            $charac->setLife($currentLife - $random);
+
+            $em->persist($charac);
+            $em->flush();
+        } else {
+            $logCharac[0]->setLog(" You even made it intact, you lucky chicken ! | ".$oldLog);
+            $em->persist($logCharac[0]);
+            $em->flush();
+            //$log.= " You even made it intact, you lucky chicken !";
+        }
+
+        $newLog = $logCharac[0]->getLog();
+
+        $this->addFlash(
+            'notice',
+            'You Fleed... You coward!'
+        );
+        return $this->redirectToRoute('play');
+
+    }
+
+
+        /**
      * @Route("/fight/{id}", name="fight")
      */
     public function fightAction($id, Request $request) {
@@ -545,7 +643,7 @@ class DefaultController extends Controller
         } else {
 
             $em = $this->getDoctrine()->getManager();
-            $this->performStaminaAction();
+            $this->performStaminaAction(10);
             $enemy = $em->getRepository('GameBundle:enemy')
                 ->find($id);
             $charac = $em->getRepository('GameBundle:characters')
@@ -607,29 +705,30 @@ class DefaultController extends Controller
 
             if ($random <= 2) {
 
-
+                //You loot something
                 if(count($query) >= 5){
                     $log.="Your inventory is full, you couldn't take the object with you ...";
                 } else {
 
                     $objects = $em->getRepository('GameBundle:objects')->findAll();
 
-                    $rand = rand(0,(count($objects)-1));
+                    $rand = rand(0, (count($objects)-1));
 
                     $newBelong = new belongs;
-                    $objectToAssign = $em->getRepository('GameBundle:objects')
-                        ->find($rand);
+                    $objectToAssign = $objects[$rand];
 
                     $newBelong->setCharacter($charac);
                     $newBelong->setObject($objectToAssign);
-                    $em->persist($newBelong);
-                    $em->flush();
+
                     //Check if you get an object from the monster
                     $log.= ("You got an object (".$objectToAssign->getName().") from the monster !");
+                    $em->persist($newBelong);
+                    $em->flush();
                 }
 
 
             } else {
+                //you don't loot anything
                 $log.= ("You got nothing from the monster !");
 
             }

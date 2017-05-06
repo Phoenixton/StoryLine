@@ -40,15 +40,27 @@
     </div>
 
     <div class="row">
-        <div id="InformationsMonster" class="col panel panel-default">
-            <div class="text-center"> The name of your enemy is {{ enemy.name }} and it has : {{ enemy.life }} hp</div>
+        <div  style="border: solid" id="options" class="col panel panel-default text-center">
+
+            <div> rooms completed : {{ charac.roomscompleted }}</div>
+
+            <span><a class="btn" href="/fight/{{ enemy.id }}" id="fight">Fight (10 Stamina) </a></span>
+            <span><a class="btn" href="/run" id="run">Run (20 Stamina) </a></span>
+            <span><a class="btn" href="/inventory/{{ charac.id }}" id="inventory">Inventory</a></span>
         </div>
     </div>
 
-    <div> rooms completed : {{ charac.roomscompleted }}</div>
-    <a href="/fight/{{ enemy.id }}" id="fight">Fight</a>
-    <a id="run">Run</a>
-    <a href="/inventory/{{ charac.id }}" id="inventory">Inventory</a>
 
+    <div class="row">
+        <div  style="border: solid" id="options" class="col panel panel-default text-center">
+            <div class="panel-heading">Log Fighting</div>
+            {% for l in log %}
+            <div class="panel-body">
+                {{ l }}
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
 
 {% endblock %}
