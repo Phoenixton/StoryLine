@@ -1,12 +1,6 @@
 <?php
   public function createObjects(Request $request){
 
-    $obj= new objects;
-    $obj->setName("");
-    $obj->setDescription("");
-    $obj->setAttackBonus();
-    $obj->setLifeBonus();
-    $obj->setDefenseBonus();
 
     $obj1= new objects;
     $obj1->setName("gnome shield");
