@@ -6,6 +6,8 @@ use GameBundle\Entity\characters;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use UserBundle\Entity\messages;
 use UserBundle\Entity\user;
+use GameBundle\Entity\belongs;
+use GameBundle\Entity\objects;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -588,6 +590,47 @@ class DefaultController extends Controller
                 $em->flush();
                 //objets
 
+
+            }
+
+            $characId = $charac->getId();
+
+            $query = $this->getDoctrine()
+                ->getManager()
+                ->createQuery("SELECT e FROM GameBundle:belongs e WHERE e.character = '$characId'")
+                ->getResult();
+
+
+
+            $random = rand(1,10);
+
+
+            if ($random <= 2) {
+
+
+                if(count($query) >= 5){
+                    $log.="Your inventory is full, you couldn't take the object with you ...";
+                } else {
+
+                    $objects = $em->getRepository('GameBundle:objects')->findAll();
+
+                    $rand = rand(0,(count($objects)-1));
+
+                    $newBelong = new belongs;
+                    $objectToAssign = $em->getRepository('GameBundle:objects')
+                        ->find($rand);
+
+                    $newBelong->setCharacter($charac);
+                    $newBelong->setObject($objectToAssign);
+                    $em->persist($newBelong);
+                    $em->flush();
+                    //Check if you get an object from the monster
+                    $log.= ("You got an object (".$objectToAssign->getName().") from the monster !");
+                }
+
+
+            } else {
+                $log.= ("You got nothing from the monster !");
 
             }
 
