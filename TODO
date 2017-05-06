@@ -1,15 +1,16 @@
--> Suppress characters of users when user is deleted
 
--> PLAY
+-> PLAY -> format
 
--> Inventory$
+-> Inventory -->
 
--> Creation compte probleme
+-> Pages d'accueil quand login ! (et page d'accueil tout court)
 
-> Reset Charac
+-> Page de description des monstres (bestiary) et des objets
 
--> Pages d'accueil quand login
+-> Display correct de l'ecran de jeu
 
-->Display correct de l'ecran de jeu
+-> Update informations SUR PERSO
 
-->NE PAS POUVOIR S'envoyer de message à soi meme
+-> Fuction to pick up an object (CHECK SI ON EN A PLUS QUE X)
+
+-> Securité pages !

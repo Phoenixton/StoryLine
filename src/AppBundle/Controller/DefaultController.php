@@ -276,7 +276,7 @@ class DefaultController extends Controller
 
 
 
-        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.user = '$id'");
+        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.character = '$id'");
         $query->execute();
 
 
@@ -293,6 +293,75 @@ class DefaultController extends Controller
         );
 
         return $this->redirectToRoute('characterReview');
+    }
+
+    /**
+     * @Route("/resetChar/{id}", name="reset_character")
+     */
+    public function resetCharacterAction($id, Request $request)
+    {
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $charac = $em->getRepository('GameBundle:characters')
+            ->find($id);
+
+        //deletes the character's belongings
+        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.character = '$id'");
+        $query->execute();
+
+        $attack = 0;
+        $defense =0;
+        $life = 0;
+
+        if($charac->getRace() == 'Human') {
+            $attack = 30;
+            $defense = 15;
+            $life = 10;
+        } else if($charac->getRace() == 'Troll') {
+            $attack = 25;
+            $defense = 18;
+            $life = 15;
+        } else if($charac->getRace() == 'Dwarf') {
+            $attack = 32;
+            $defense = 20;
+            $life = 11;
+        } else if($charac->getRace() == 'Elf') {
+            $attack = 20;
+            $defense = 11;
+            $life = 12;
+        } else {
+
+        }
+
+        if($charac->getClass() == 'Thief') {
+            $life += 2;
+        } else if($charac->getClass() == 'Warrior') {
+            $attack += 5;
+            $defense += 2;
+        } else if($charac->getClass() == 'Magician') {
+            $life -= 3;
+        } else if($charac->getClass() == 'Merchant') {
+            $attack -= 3;
+        } else {
+
+        }
+
+        $charac->setLife($life);
+        $charac->setAttack($attack);
+        $charac->setDefense($defense);
+        $charac->setRoomscompleted(0);
+
+        $em->persist($charac);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Reset of the character completed'
+        );
+        return $this->redirectToRoute('characterReview');
+
+
     }
 
     /**
