@@ -11,7 +11,8 @@
 
                 <div class="col panel panel-default">
 
-                    <div class="panel-heading">{{ ent.subject }} <div class="text-right"> To : <a href="/sendMessage/{{ent.receiver.id}}">{{ ent.receiver.username }}</a> on the : {{ ent.date|date('Y-m-d H:i:s') }}</div> </div>
+                    <div class="panel-heading">{{ ent.subject }} {{ ent.receiver.username }} <div class="text-right">
+                            To : <a href="/sendMessage/{{ent.receiver.id}}">{{ ent.receiver.username }}</a> on the : {{ ent.date|date('Y-m-d H:i:s') }}</div> </div>
 
                     <div class="panel-body">
                         {{ ent.content }}

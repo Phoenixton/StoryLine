@@ -433,6 +433,22 @@ class DefaultController extends Controller
             $receiver = $em->getRepository('UserBundle:user')
                 ->find($id);
 
+            if($receiver == $usr) {
+                $this->addFlash(
+                    'error',
+                    'Can\'t send a message to yourself... !'
+                );
+
+                return $this->redirectToRoute('listofusers');
+            } else if($receiver == NULL || $usr == NULL) {
+                $this->addFlash(
+                    'error',
+                    'The person you want to send a message to is unknown !'
+                );
+
+                return $this->redirectToRoute('listofusers');
+            }
+
             $newmessage->setSender($usr);
             $newmessage->setReceiver($receiver);
             $newmessage->setContent($content);
@@ -584,6 +600,7 @@ class DefaultController extends Controller
 
         $charac = $em->getRepository('GameBundle:characters')
             ->find($usr->getCurrentCharacter());
+
         $characId = $charac->getId();
 
         $logCharac = $this->getDoctrine()
@@ -597,7 +614,7 @@ class DefaultController extends Controller
         if($random <= 4) {
             //$log.= " Unfortunately, you lost".$random." hp while cowardly making your escape...";
 
-            $logCharac[0]->setLog(" Unfortunately, you lost".$random." hp while cowardly making your escape... | ".$oldLog);
+            $logCharac[0]->setLog(" Unfortunately, you lost ".$random." hp while cowardly making your escape... | ".$oldLog);
             $em->persist($logCharac[0]);
 //            $charac = $em->getRepository('GameBundle:characters')
 //                ->find($usr->getCurrentCharacter());
@@ -649,22 +666,39 @@ class DefaultController extends Controller
             $charac = $em->getRepository('GameBundle:characters')
                 ->find($usr->getCurrentCharacter());
 
+            $characId = $charac->getId();
+
+            $logCharac = $this->getDoctrine()
+                ->getManager()
+                ->createQuery("SELECT e FROM GameBundle:logs e WHERE e.charac = '$characId'")
+                ->getResult();
+
+            $oldLog = $logCharac[0]->getLog();
+
             $damagesTaken = 0;
             $lifeToDefeat = $enemy->getLife();
-            $log = "";
+            //$log = "";
 
+            //bataille
             while(($charac->getLife() - $damagesTaken) > 0) {
 
                 $lifeToDefeat -= ($charac->getAttack() - $enemy->getDefense());
-                $log .= "Le perso a tape pour ".($charac->getAttack() - $enemy->getDefense()).". ";
+                $oldLog = "Your character made the monster lose ".($charac->getAttack() - $enemy->getDefense())." hp. | ".$oldLog;
+                //$logCharac[0]->setLog("Your character made the monster lose ".($charac->getAttack() - $enemy->getDefense())." hp. | ".$oldLog);
+                //$em->persist($logCharac[0]);
+                //$log .= "Le perso a tape pour ".($charac->getAttack() - $enemy->getDefense()).". ";
                 if($lifeToDefeat <= 0) {
                     break;
                 }
                 $damagesTaken += $enemy->getAttack();
-                $log .= "L'enemy a tape pour ".($enemy->getAttack()).". ";
+                //$log .= "L'enemy a tape pour ".($enemy->getAttack()).". ";
+                //$logCharac[0]->setLog("The enemy hit you for ".($enemy->getAttack())." hp. |".$oldLog);
+                //$em->persist($logCharac[0]);
+                $oldLog = " The enemy hit you for ".($enemy->getAttack())." hp. | ".$oldLog;
 
             }
 
+            //if the character dies
             if($damagesTaken >= $charac->getLife()) {
 
                 $charac->setLife(0);
@@ -673,11 +707,12 @@ class DefaultController extends Controller
 
                 $this->addFlash(
                     'error',
-                    'You died! Better luck next time! \n '. $log
+                    'You died! Better luck next time! \n '
                 );
 
                 return $this->redirectToRoute('characterReview');
 
+                //else
             } else if ($lifeToDefeat <=0){
 
                 $charac->setLife($charac->getLife() - $damagesTaken);
@@ -686,8 +721,6 @@ class DefaultController extends Controller
                 $em->persist($charac);
 
                 $em->flush();
-                //objets
-
 
             }
 
@@ -699,7 +732,6 @@ class DefaultController extends Controller
                 ->getResult();
 
 
-
             $random = rand(1,10);
 
 
@@ -707,7 +739,11 @@ class DefaultController extends Controller
 
                 //You loot something
                 if(count($query) >= 5){
-                    $log.="Your inventory is full, you couldn't take the object with you ...";
+                    //$log.="Your inventory is full, you couldn't take the object with you ...";
+                    //$logCharac[0]->setLog(" Your inventory is full, you couldn't take the object with you ... | ".$oldLog);
+                    //$em->persist($logCharac[0]);
+                    $oldLog = " Your inventory is full, you couldn't take the object with you ... | ".$oldLog;
+
                 } else {
 
                     $objects = $em->getRepository('GameBundle:objects')->findAll();
@@ -721,7 +757,11 @@ class DefaultController extends Controller
                     $newBelong->setObject($objectToAssign);
 
                     //Check if you get an object from the monster
-                    $log.= ("You got an object (".$objectToAssign->getName().") from the monster !");
+                    //$log.= ("You got an object (".$objectToAssign->getName().") from the monster !");
+                    //$logCharac[0]->setLog("You got an object (".$objectToAssign->getName().") from the monster ! | ".$oldLog);
+                    //$em->persist($logCharac[0]);
+                    $oldLog = " You got an object (".$objectToAssign->getName().") from the monster ! | ".$oldLog;
+
                     $em->persist($newBelong);
                     $em->flush();
                 }
@@ -729,13 +769,18 @@ class DefaultController extends Controller
 
             } else {
                 //you don't loot anything
-                $log.= ("You got nothing from the monster !");
-
+//                $log.= ("You got nothing from the monster !");
+                //$logCharac[0]->setLog(" You got nothing from the monster ! |".$oldLog);
+                //$em->persist($logCharac[0]);
+                $oldLog = " You got nothing from the monster ! | ".$oldLog;
             }
 
+            $logCharac[0]->setLog($oldLog);
+            $em->persist($logCharac[0]);
+            $em->flush();
             $this->addFlash(
                 'notice',
-                'You Succeeded! Well Played!'.$log
+                'You Succeeded! Well Played!'
             );
             return $this->redirectToRoute('play');
 
