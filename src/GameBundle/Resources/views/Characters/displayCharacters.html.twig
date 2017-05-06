@@ -22,33 +22,33 @@
                             <div class="panel-heading">Informations</div>
 
                                 <div class="panel-body">
-                                    Gender : {{ ent.gender }}
+                                    <span><u>Gender</u> : {{ ent.gender }}</span>,  <span><u>Race</u> : {{ ent.race }}</span>
                                 </div>
                                 <div class="panel-body">
-                                    Race : {{ ent.race }}
+                                    <u>Class</u> : {{ ent.class }}
                                 </div>
                                 <div class="panel-body">
-                                    Class : {{ ent.class }}
+                                    <span><u>Attack</u> : {{ ent.attack }}</span>,  <span> <u>Defense</u> : {{ ent.defense }}</span>
                                 </div>
                                 <div class="panel-body">
-                                    Life : {{ ent.life }}
+                                    <u>Current Life</u> : {{ ent.life }} hp
                                 </div>
                                 <div class="panel-body">
-                                    Current Story : {{ ent.story }}
+                                    <u>Rooms Completed</u> : {{ ent.roomsCompleted }}
                                 </div>
 
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-7">
                         <div class="panel panel-success">
-                            <div class="panel-heading">Inventory</div>
+                            <div class="panel-heading"><a href="/inventory/{{ ent.id }}">Inventory</a></div>
 
                             {% for belong in belongings %}
                                 {% if belong.character.id == ent.id %}
                                     {% for obj in objects %}
                                         {% if belong.object.id is sameas(obj.id) %}
                                             <div class="panel-body">
-                                                Object : {{ obj.name }}
+                                                <u>Object</u> : {{ obj.name }}
                                             </div>
                                         {% endif %}
                                     {% endfor %}
