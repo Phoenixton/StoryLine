@@ -5,11 +5,50 @@
 
 {% block body %}
 
-    <div> Le nom de votre ennemi est : {{ enemy.name }} avec {{ enemy.life }}</div>
-    <div> Votre perso {{ charac.name }} a : {{ charac.life }}</div>
+    <div class="row">
+        <div id="InformationsPerso" class="col panel panel-default" style="border: solid">
+            <div class="row">
+
+                <div class="col-lg-5 col-md-5 col-sm-5">
+
+                    <div class="text-center"> Your character is  {{ charac.name }} and {% if charac.gender is sameas('Female') %} she {% else %} he {% endif %} has : {{ charac.life }} hp</div>
+                    <div class="panel-body text-center">
+                        <span><u>Attack</u> : {{ charac.attack }}</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <span><u>Defense</u> : {{ charac.defense }}</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <span><u>Fights Won</u> : {{ charac.roomscompleted  }}</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <div class="text-center">The name of your enemy is <span class="enemy">{{ enemy.name }}
+
+                            <div class="enemyDescription" style="border: solid">{{ enemy.description }}</div>
+                        </span> and it has : {{ enemy.life }} hp</div>
+                    <div class="panel-body text-center">
+                        <span><u>Attack</u> : {{ enemy.attack }}</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <span><u>Defense</u> : {{ enemy.defense }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="InformationsMonster" class="col panel panel-default">
+            <div class="text-center"> The name of your enemy is {{ enemy.name }} and it has : {{ enemy.life }} hp</div>
+        </div>
+    </div>
+
     <div> rooms completed : {{ charac.roomscompleted }}</div>
     <a href="/fight/{{ enemy.id }}" id="fight">Fight</a>
     <a id="run">Run</a>
     <a href="/inventory/{{ charac.id }}" id="inventory">Inventory</a>
+
 
 {% endblock %}

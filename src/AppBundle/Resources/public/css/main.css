@@ -9,3 +9,11 @@ body {
     background-color: white;
     border: solid;
 }
+
+.enemyDescription {
+    display: none;
+}
+
+.enemy:hover .enemyDescription {
+    display: block;
+}

@@ -34,7 +34,7 @@
 
                 <!--Si personne n'est co -->
                 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
-                    <button type="button" id="toLogOut" class="btn btn-lg btn-danger navbar-right" style="margin-left: 10px; padding-top: -5px">Log Out</button>
+                    <button type="button" id="toLogOut" class="btn btn-lg btn-danger navbar-right" style="margin-left: 10px; padding-top: -5px">{{ app.user.username }} : Log Out</button>
 
                     <script type="text/javascript">
                         document.getElementById("toLogOut").onclick = function () {
@@ -53,13 +53,13 @@
                     {% elseif is_granted('ROLE_USER') %}
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li style="margin-left: 50px"><a href="/play">Play</a></li>
+                            <li style="margin-left: 0px"><a href="/play">Play</a></li>
                             <li style="margin-left: 50px"><a href="/seeCharacter">Characters</a></li>
                             <li style="margin-left: 50px"><a href="/listofusers">The Users</a></li>
                             <li style="margin-left: 50px"><a href="/messagesReceived">Messages</a></li>
+                            <li style="margin-left: 50px"><a href="/bestiary">Bestiary</a></li>
                         </ul>
                         <p class="navbar-text" style="color: white; margin-left: 50px">Stamina : {{ app.user.stamina }} </p>
-                        <p class="navbar-text" style="color: white">Name : {{ app.user.username }} </p>
                     </div><!--/.nav-collapse -->
                 {% endif %}
                 {% else %}

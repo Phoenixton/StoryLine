@@ -92,6 +92,23 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/bestiary", name="bestiary")
+     */
+    public function showAllEnemiesAction(){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $this->giveDailyStamina();
+
+        $monsters = $em->getRepository('GameBundle:enemy')->findAll();
+
+        return $this->render('GameBundle:Enemy:bestiary.html.twig', array(
+            'monsters' => $monsters
+        ));
+    }
+
+
+    /**
      * @Route("/createCharacter", name="characterCration")
      */
     public function createCharacterAction(Request $request){
@@ -539,12 +556,12 @@ class DefaultController extends Controller
             while(($charac->getLife() - $damagesTaken) > 0) {
 
                 $lifeToDefeat -= ($charac->getAttack() - $enemy->getDefense());
-                $log .= "Le perso a tape pour ".($charac->getAttack() - $enemy->getDefense()).", ";
+                $log .= "Le perso a tape pour ".($charac->getAttack() - $enemy->getDefense()).". ";
                 if($lifeToDefeat <= 0) {
                     break;
                 }
                 $damagesTaken += $enemy->getAttack();
-                $log .= "L'enemy a tape pour ".($enemy->getAttack()).", ";
+                $log .= "L'enemy a tape pour ".($enemy->getAttack()).". ";
 
             }
 
