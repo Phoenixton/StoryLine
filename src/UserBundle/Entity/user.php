@@ -4,7 +4,7 @@ namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * user
  *
@@ -57,6 +57,13 @@ class user implements UserInterface
      */
     private $currentCharacter;
 
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please, upload the avatar you wish.")
+     * @Assert\File(mimeTypes={ "image/png" })
+     */
+    private $avatar;
 
     /**
      * Get id
@@ -188,6 +195,32 @@ class user implements UserInterface
 
         return $this;
     }
+
+
+    /**
+     * Get avatar
+     *
+     * @return file
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * Set avatar
+     *
+     * @param file $avatar
+     *
+     * @return user
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
 
 
     /**

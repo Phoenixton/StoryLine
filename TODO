@@ -1,26 +1,33 @@
 
--> PLAY -> format
+-> PLAY -> format --
 
--> Inventory -->
+-> Pages d'accueil quand logout ()! (et page d'accueil tout court : Avec le résumé de chaque onglet)
 
--> Pages d'accueil quand login ! (et page d'accueil tout court)
+-> Page de description des objets ? --> METTRE DNAS LA BDDD DANS LA DESCRIPTION LES EFFETS
 
--> Page de description des monstres (bestiary) et des objets
+-> Display correct de l'ecran de jeu --
 
--> Display correct de l'ecran de jeu
+-> Securité pages ! !!!!!!!!!!!!!!!!!!
 
--> Securité pages !
+-> Avatars !!!!!!!!!!!!!!! OBLIGATOIRE
 
--> Images/Font
+-> Images !!
 
--> DEFENSE
+-> DEFENSE -->  A utiliser
 
--> Create charac texte explicatif
+-> Create charac texte explicatif !!!!!
 
--> Do something like every 10 rooms enemies become stronger
+-> Do something like every 10 rooms enemies become stronger !!!! --
 
--> Run function
+--> Populate monsters (order) and objects (fix values)
 
--> ennemi aléatoire + En fonction des rooms
 
--> log fight one to one charac_id , text area
+
+                            <li><a href="{{ asset('uploads/avatar/' ~ app.user.avatar) }}">View Avatar</a>
+
+
+                                {% image output="uploads/avatar/5c266af1059be015e28c2bd41f548de3.png"%}
+                                <img src="{{ asset_url }}" alt=Avatar">
+                                {% endimage %}</li>
+
+                                Verify problems with avatar

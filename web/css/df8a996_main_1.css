@@ -1,0 +1,19 @@
+body {
+
+    font-family: 'Inknut Antiqua', serif;
+    background-color: lightgrey;
+}
+
+
+.table {
+    background-color: white;
+    border: solid;
+}
+
+.enemyDescription {
+    display: none;
+}
+
+.enemy:hover .enemyDescription {
+    display: block;
+}

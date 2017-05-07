@@ -483,9 +483,11 @@ class DefaultController extends Controller
         $this->giveDailyStamina();
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
+
+        //Change to ASC if we want the oldest ones on top
         $messages = $this->getDoctrine()
             ->getManager()
-            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.receiver='.($usr->getId()).' ORDER BY e.date')
+            ->createQuery('SELECT e FROM UserBundle:messages e WHERE e.receiver='.($usr->getId()).' ORDER BY e.date DESC')
             ->getResult();
 
         return $this->render('UserBundle:Messages:displayMessagesReceived.html.twig', array(
@@ -557,15 +559,29 @@ class DefaultController extends Controller
             return $this->redirectToRoute('characterReview');
         } else {
 
+            //here -> Check the number of defeated enemies and do
+            //$enemy_id = rand(1,x); each time CHANGE ENEMYRAND
+            if($charac->getRoomscompleted() < 3) {
+                $enemy_id = rand(0,1);
+            } elseif($charac->getRoomscompleted() < 6) {
+                //enlever le ver, par exemple (refaire la table, le ver est 2)
+                $enemy_id = rand(1,2);
+            } elseif($charac->getRoomscompleted() < 15) {
+                $enemy_id = rand(1,2);
+            } elseif($charac->getRoomscompleted() < 20) {
+                $enemy_id = rand(1,2);
+            } else {
+                $enemy_id = rand(1,2);
+            }
 
-            $enemy_id = rand(1,2);
+
             $em = $this->getDoctrine()->getManager();
-            $enemy = $em->getRepository('GameBundle:enemy')
-                ->find($enemy_id);
+
+            $enemy = $em->getRepository('GameBundle:enemy')->findAll();
 
 
             return $this->render('GameBundle:Default:play.html.twig', array(
-                        'enemy' => $enemy,
+                        'enemy' => $enemy[$enemy_id],
                         'charac' => $charac,
                         'log' => $logToDisplay
             ));
@@ -742,7 +758,7 @@ class DefaultController extends Controller
                     //$log.="Your inventory is full, you couldn't take the object with you ...";
                     //$logCharac[0]->setLog(" Your inventory is full, you couldn't take the object with you ... | ".$oldLog);
                     //$em->persist($logCharac[0]);
-                    $oldLog = " Your inventory is full, you couldn't take the object with you ... | ".$oldLog;
+                    $oldLog = " -- Your inventory is full, you couldn't take the object with you, but hey, at least you survived ... -- | ".$oldLog;
 
                 } else {
 
@@ -760,7 +776,7 @@ class DefaultController extends Controller
                     //$log.= ("You got an object (".$objectToAssign->getName().") from the monster !");
                     //$logCharac[0]->setLog("You got an object (".$objectToAssign->getName().") from the monster ! | ".$oldLog);
                     //$em->persist($logCharac[0]);
-                    $oldLog = " You got an object (".$objectToAssign->getName().") from the monster ! | ".$oldLog;
+                    $oldLog = " -- You got an object (".$objectToAssign->getName().") from the monster ! -- | ".$oldLog;
 
                     $em->persist($newBelong);
                     $em->flush();
@@ -772,7 +788,7 @@ class DefaultController extends Controller
 //                $log.= ("You got nothing from the monster !");
                 //$logCharac[0]->setLog(" You got nothing from the monster ! |".$oldLog);
                 //$em->persist($logCharac[0]);
-                $oldLog = " You got nothing from the monster ! | ".$oldLog;
+                $oldLog = " -- You got nothing from the monster ! -- | ".$oldLog;
             }
 
             $logCharac[0]->setLog($oldLog);
