@@ -8,6 +8,14 @@ A Symfony project.
  - On Windows : Navigate to the root folder (Storyline/) and do :
  > php bin/console server:run
 
+### In case of : Fatal Error require() ...
+Do :
+ - On Windows :
+> php composer.phar install
+ - On Linux :
+> composer install
+
+
 
 # Database :
 
@@ -16,13 +24,6 @@ A Symfony project.
   Il s'agit du code sql tiré de nos propres tables, sous phpmyadmin.
 
 
-
-### In case of : Fatal Error require() ...
-Do :
- - On Windows :
-> php composer.phar install
- - On Linux :
-> composer install
 
 
 # 1. Le Jeu
