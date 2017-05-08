@@ -9,6 +9,14 @@ A Symfony project.
  > php bin/console server:run
 
 
+# Database :
+
+  Vous n'aurez pas les mêmes données que nous au niveau des utilisateurs, bien entendu, mais nous vous offrons deux fichiers contenant les commandes sql à effectuer pour obtenir la même table de monstres et d'objets, pour éviter toute erreur.
+  Vous les trouverez à la racine, nommés objects.txt et enemy.txt
+  Il s'agit du code sql tiré de nos propres tables, sous phpmyadmin.
+
+
+
 ### In case of : Fatal Error require() ...
 Do :
  - On Windows :
@@ -109,7 +117,7 @@ Beaucoup d'idées nous trottent dans la tête sur comment améliorer ce projet (out
   -  Un rendu graphique plus satisfaisant, principalement au niveau de l'écran de jeu. Le log d'actions est assez austère.
   -  Une possibilité d'envoyer (comme sur Candy crush par exemple) des points d'actions d'un joueur à un autre.
 
-  ## 3. Le projet sur Github 
+  ## 3. Le projet sur Github
 
   Voici le lien pour le projet sur Github : 
 
