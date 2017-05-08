@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List of Users{% endblock %}
+{% block title %}List of Monsters and Objects{% endblock %}
 
 {% block body %}
     <h1>Bestiary</h1>
@@ -23,6 +23,33 @@
                     <td>{{ monster.attack }}</td>
                     <td>{{ monster.defense }}</td>
                     <td>{{ monster.life }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+
+    <h1>Objects</h1>
+    <div class="objects">
+        <table class ="table table-bordered table-stripped table-hover">
+            <thead>
+            <tr>
+                <th>Object</th>
+                <th>Description</th>
+                <th>Attack Bonus</th>
+                <th>Defense Bonus </th>
+                <th>Life Bonus</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in objects %}
+                <tr>
+                    <td>{{ object.name }}</td>
+                    <td>{{ object.description }}</td>
+                    <td>{{ object.attackBonus }}</td>
+                    <td>{{ object.defenseBonus }}</td>
+                    <td>{{ object.lifeBonus }}</td>
                 </tr>
             {% endfor %}
             </tbody>

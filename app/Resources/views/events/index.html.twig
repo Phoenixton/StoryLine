@@ -1,0 +1,50 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}List of events ADMIN{% endblock %}
+{% block body %}
+    <h1>Event list</h1>
+    <div class="list_users">
+        <table class ="table table-bordered table-stripped table-hover">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Begindate</th>
+                <th>Enddate</th>
+                <th>Monster</th>
+                <th>Object</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td><a href="{{ path('events_show', { 'id': event.id }) }}">{{ event.id }}</a></td>
+                    <td>{{ event.name }}</td>
+                    <td>{% if event.begindate %}{{ event.begindate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if event.enddate %}{{ event.enddate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{{ event.monster }}</td>
+                    <td>{{ event.object }}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('events_show', { 'id': event.id }) }}">show</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('events_edit', { 'id': event.id }) }}">edit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <ul>
+            <li>
+                <a href="{{ path('events_new') }}">Create a new event</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+

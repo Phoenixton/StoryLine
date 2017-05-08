@@ -8,7 +8,7 @@
 
         <div class="jumbotron">
             <div class="container">
-                <h1>Storyline (àchanger ?)</h1>
+                <h1>Storyline</h1>
                 <p> A game where you will have to face different creatures to prove your worth and win treasures, by  exploring dark dungeons. </p>
                 <p><a class="btn btn-primary btn-lg" href="signUp" role="button">Sign Up Now&raquo;</a></p>
             </div>
@@ -30,7 +30,7 @@ Each of your characters regains a bit of endurance every hour. </p>
                 <div class="col-md-4">
                     <h2>Characters</h2>
                     <p> You can create up to three characters by personalizing their name, race, class, etc.
-When one of your characters dies, he can not be resurrected. </p>
+Watch your characters die endlessly. </p>
                 </div>
             </div>
 
@@ -43,6 +43,150 @@ When one of your characters dies, he can not be resurrected. </p>
 
     {% else %}
 
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="row">
+                <div id="InformationsPerso" class="col panel panel-default" style="border: solid">
+
+                    <div class="panel-heading text-center">Informations </div>
+                    <div class="row">
+                        <div class="panel-body text-center">
+                            <span><u><b>Username</b></u> : {{ app.user.username }}</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="titleText">User List</h2>
+                        <p> You can remove, add, edit and do whatever you want to users from here.</p>
+
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="titleText">Events</h2>
+                        <p> You can launch an event from here, set its starting date, and its end date.</p>
+
+                    </div>
+                </div>
+            </div>
+
+
+        {% else %}
+        <div class="row">
+            <div id="InformationsPerso" class="col panel panel-default" style="border: solid">
+
+                <div class="panel-heading text-center">Informations </div>
+                <div class="row">
+                    <div class="panel-body text-center">
+                        <span><u><b>Username</b></u> : {{ app.user.username }}</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <span><u><b>Current Character</b></u> : {{ currentChar.name }}</span>, <span><u><b>Current Room Number </b></u> : {{ currentChar.roomscompleted +1 }}</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+            <div class="row">
+                <div id="InformationsEvents" class="col panel panel-default" style="border: solid">
+
+                    <div class="panel-heading text-center"> Current Events </div>
+                    <div class="row">
+
+
+                        {% for event in currentEvents %}
+                            <div class="panel-body text-center">
+                                <span><u><b>Nom :</b></u> {{ event.name }}</span>
+                                <span>
+                                    {% if event.monster != NULL and event.object != NULL %}
+                                    <u><b>Monsters/Objects affected :</b></u>     {{  event.monster }} / {{ event.object }}
+                                    {% elseif event.monster %}
+                                    <u><b>Monster Affected :</b></u> {{ event.monster }}
+                                    {% elseif event.object %}
+                                    <u><b>Object Affected :</b></u> {{ event.object }}
+                                    {% else %}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div id="InformationsEventsToCome" class="col panel panel-default" style="border: solid">
+
+                    <div class="panel-heading text-center"> Events To Come </div>
+                    <div class="row">
+
+
+                        {% for event in eventsToCome %}
+                            <div class="panel-body text-center">
+                                <span><u><b>Nom :</b></u> {{ event.name }}</span>
+                                <span>
+                                    {% if event.monster != NULL and event.object != NULL %}
+                                        <u><b>Monsters/Objects affected : </b></u>    {{  event.monster }} / {{ event.object }}
+                                    {% elseif event.monster %}
+                                        <u><b>Monster Affected :</b></u> {{ event.monster }}
+                                    {% elseif event.object %}
+                                        <u><b>Object Affected : </b></u>{{ event.object }}
+                                    {% else %}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2 class="titleText">Play</h2>
+                    <p> The goal is to defeat as many enemies as possible to win as many victory points as possible at each dungeon.</p>
+
+                </div>
+                <div class="col-md-4">
+                    <h2 class="titleText">Stamina</h2>
+                    <p> Each action requires endurance: to move, to fight, to collect a treasure ...
+                        Each of your characters regains a bit of endurance every hour. </p>
+
+                </div>
+                <div class="col-md-4">
+                    <h2 class="titleText">Characters</h2>
+                    <p> You can create up to three characters by personalizing their name, race, class, etc.
+                        Collect objects and use them in their inventory, and watch your characters die endlessly !</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <h2 class="titleText">Messages</h2>
+                    <p> You can access your messages from here, the ones you sent and the ones you received from other players !</p>
+
+                </div>
+                <div class="col-md-4">
+                    <h2 class="titleText">The Users</h2>
+                    <p> Here, you can access the users list, see when their last connection was and send them a message ! </p>
+
+                </div>
+                <div class="col-md-4">
+                    <h2 class="titleText">Bestiary</h2>
+                    <p> For those brave enough, come here have a peek of what you might expect from the dungeons ! </p>
+                </div>
+            </div>
+
+        </div>
+
+        {% endif %}
         <!-- if the user is connected -->
 
     {% endif %}

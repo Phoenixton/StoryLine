@@ -34,12 +34,12 @@ class DefaultController extends Controller
                 $usr= $this->get('security.token_storage')->getToken()->getUser();
                 if($usr->getLastconnect() == null) {
 
-                    $usr->setStamina($usr->getStamina() + 10);
+                    $usr->setStamina($usr->getStamina() + 50);
                     $em->flush();
                     //?
                 } else if(new \DateTime($usr->getLastconnect()->format('Y-m-d')) < new \DateTime((new \DateTime("now"))->format('Y-m-d'))){
 
-                    $usr->setStamina($usr->getStamina() + 10);
+                    $usr->setStamina($usr->getStamina() + 50);
                     $em->flush();
 
                 } else {
@@ -69,9 +69,39 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
 
+        $em = $this->getDoctrine()->getManager();
         $this->giveDailyStamina();
 
-        return $this->render('AppBundle:HomePage:home.html.twig');
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+        $currentchar_id = "";
+        $securityContext = $this->container->get('security.authorization_checker');
+
+        if(is_string($usr)) {
+            $currentchar = null;
+        } else if($securityContext->isGranted('ROLE_ADMIN')) {
+            $currentchar = null;
+        } else {
+            $currentchar_id = $usr->getCurrentCharacter();
+            $currentchar = $em->getRepository('GameBundle:characters')
+                ->find($currentchar_id);
+
+
+        }
+        $eventsToCome = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM GameBundle:events e WHERE e.enddate > CURRENT_DATE() AND e.begindate > CURRENT_DATE()')
+            ->getResult();
+
+        $currentEvents = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT e FROM GameBundle:events e WHERE e.enddate > CURRENT_DATE() AND e.begindate <= CURRENT_DATE()')
+            ->getResult();
+
+        return $this->render('AppBundle:HomePage:home.html.twig', array(
+            'currentChar' => $currentchar,
+            'currentEvents' => $currentEvents,
+            'eventsToCome' => $eventsToCome
+        ));
 
     }
 
@@ -106,8 +136,13 @@ class DefaultController extends Controller
 
         $monsters = $em->getRepository('GameBundle:enemy')->findAll();
 
+
+        $objects = $em->getRepository('GameBundle:objects')->findAll();
+
+
         return $this->render('GameBundle:Enemy:bestiary.html.twig', array(
-            'monsters' => $monsters
+            'monsters' => $monsters,
+            'objects' => $objects
         ));
     }
 
@@ -172,21 +207,21 @@ class DefaultController extends Controller
                 $life = 0;
 
                 if($race == 'Human') {
-                    $attack = 30;
+                    $attack = 22;
                     $defense = 15;
                     $life = 10;
                 } else if($race == 'Troll') {
-                    $attack = 25;
-                    $defense = 18;
+                    $attack = 30;
+                    $defense = 13;
                     $life = 15;
                 } else if($race == 'Dwarf') {
-                    $attack = 32;
-                    $defense = 20;
-                    $life = 11;
+                    $attack = 28;
+                    $defense = 18;
+                    $life = 8;
                 } else if($race == 'Elf') {
                     $attack = 20;
                     $defense = 11;
-                    $life = 12;
+                    $life = 18;
                 } else {
 
                 }
@@ -305,7 +340,7 @@ class DefaultController extends Controller
 
         $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:belongs e WHERE e.character = '$id'");
         $query->execute();
-        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:logs e WHERE e.character = '$id'");
+        $query = $this->getDoctrine()->getManager()->createQuery("DELETE FROM GameBundle:logs e WHERE e.charac = '$id'");
         $query->execute();
 
         if($usr->getCurrentCharacter() == $id) {
@@ -354,21 +389,21 @@ class DefaultController extends Controller
         $life = 0;
 
         if($charac->getRace() == 'Human') {
-            $attack = 30;
+            $attack = 22;
             $defense = 15;
             $life = 10;
         } else if($charac->getRace() == 'Troll') {
-            $attack = 25;
-            $defense = 18;
+            $attack = 30;
+            $defense = 13;
             $life = 15;
         } else if($charac->getRace() == 'Dwarf') {
-            $attack = 32;
-            $defense = 20;
-            $life = 11;
+            $attack = 28;
+            $defense = 18;
+            $life = 8;
         } else if($charac->getRace() == 'Elf') {
             $attack = 20;
             $defense = 11;
-            $life = 12;
+            $life = 18;
         } else {
 
         }
@@ -385,6 +420,7 @@ class DefaultController extends Controller
         } else {
 
         }
+
 
         $charac->setLife($life);
         $charac->setAttack($attack);
@@ -559,31 +595,73 @@ class DefaultController extends Controller
             return $this->redirectToRoute('characterReview');
         } else {
 
+
+
+            $enemy = $this->getDoctrine()
+                ->getManager()
+                ->createQuery("SELECT e FROM GameBundle:enemy e ORDER BY e.attack ASC")
+                ->getResult();
+
+
             //here -> Check the number of defeated enemies and do
             //$enemy_id = rand(1,x); each time CHANGE ENEMYRAND
-            if($charac->getRoomscompleted() < 3) {
+            if($charac->getRoomscompleted() < 5) {
                 $enemy_id = rand(0,1);
-            } elseif($charac->getRoomscompleted() < 6) {
+            } elseif($charac->getRoomscompleted() < 10) {
                 //enlever le ver, par exemple (refaire la table, le ver est 2)
-                $enemy_id = rand(1,2);
+                $enemy_id = rand(2,4);
             } elseif($charac->getRoomscompleted() < 15) {
-                $enemy_id = rand(1,2);
+                $enemy_id = rand(3,6);
             } elseif($charac->getRoomscompleted() < 20) {
-                $enemy_id = rand(1,2);
+                $enemy_id = rand(5,9);
+            } elseif($charac->getRoomscompleted() < 25) {
+                $enemy_id = rand(7,11);
+            } elseif($charac->getRoomscompleted() < 30) {
+                $enemy_id = rand(9,12);
+            } elseif($charac->getRoomscompleted() < 35) {
+                $enemy_id = rand(11,count($enemy) - 1);
             } else {
-                $enemy_id = rand(1,2);
+
             }
 
+            $possibleEnemies = array($enemy_id);
+
+            $currentEvents = $this->getDoctrine()
+                ->getManager()
+                ->createQuery('SELECT e FROM GameBundle:events e WHERE e.enddate >= CURRENT_DATE() AND e.begindate <= CURRENT_DATE()')
+                ->getResult();
+
+            for($i = 0; $i < count($currentEvents); $i++) {
+
+                if($currentEvents[$i]->getMonster() != NULL) {
+
+                    $monster = $currentEvents[$i]->getMonster();
+                    $eventMonster = $this->getDoctrine()
+                        ->getManager()
+                        ->createQuery("SELECT e FROM GameBundle:enemy e WHERE e.name='$monster'")
+                        ->getResult();
+
+                    $eventMonster_id = 0;
+                    for($j = 0; $j < count($enemy); $j++) {
+                        if($eventMonster[0]->getId() == $enemy[$j]->getId()) {
+                            $eventMonster_id = $j;
+                        }
+                    }
+                    array_push($possibleEnemies, $eventMonster_id);
+
+                }
+
+            }
+
+            $enemy_id = rand(0, count($possibleEnemies) -1);
 
             $em = $this->getDoctrine()->getManager();
 
-            $enemy = $em->getRepository('GameBundle:enemy')->findAll();
-
-
             return $this->render('GameBundle:Default:play.html.twig', array(
-                        'enemy' => $enemy[$enemy_id],
+                        'enemy' => $enemy[$possibleEnemies[$enemy_id]],
                         'charac' => $charac,
-                        'log' => $logToDisplay
+                        'log' => $logToDisplay,
+                        'possible' => $possibleEnemies
             ));
         }
 
@@ -698,7 +776,7 @@ class DefaultController extends Controller
             //bataille
             while(($charac->getLife() - $damagesTaken) > 0) {
 
-                $lifeToDefeat -= ($charac->getAttack() - $enemy->getDefense());
+                $lifeToDefeat -= max(1,($charac->getAttack() - $enemy->getDefense()));
                 $oldLog = "Your character made the monster lose ".($charac->getAttack() - $enemy->getDefense())." hp. | ".$oldLog;
                 //$logCharac[0]->setLog("Your character made the monster lose ".($charac->getAttack() - $enemy->getDefense())." hp. | ".$oldLog);
                 //$em->persist($logCharac[0]);
@@ -706,11 +784,11 @@ class DefaultController extends Controller
                 if($lifeToDefeat <= 0) {
                     break;
                 }
-                $damagesTaken += $enemy->getAttack();
+                $damagesTaken += max(1,$enemy->getAttack()-$charac->getDefense());
                 //$log .= "L'enemy a tape pour ".($enemy->getAttack()).". ";
                 //$logCharac[0]->setLog("The enemy hit you for ".($enemy->getAttack())." hp. |".$oldLog);
                 //$em->persist($logCharac[0]);
-                $oldLog = " The enemy hit you for ".($enemy->getAttack())." hp. | ".$oldLog;
+                $oldLog = " The enemy hit you for ".max(1,$enemy->getAttack()-$charac->getDefense())." hp. | ".$oldLog;
 
             }
 
@@ -766,8 +844,41 @@ class DefaultController extends Controller
 
                     $rand = rand(0, (count($objects)-1));
 
+                    $possibleObjects = array($rand);
+
+                    $currentEvents = $this->getDoctrine()
+                        ->getManager()
+                        ->createQuery('SELECT e FROM GameBundle:events e WHERE e.enddate >= CURRENT_DATE() AND e.begindate <= CURRENT_DATE()')
+                        ->getResult();
+
+                    for($i = 0; $i < count($currentEvents); $i++) {
+
+                        if($currentEvents[$i]->getObject() != NULL) {
+
+                            $object = $currentEvents[$i]->getObject();
+                            $eventObject = $this->getDoctrine()
+                                ->getManager()
+                                ->createQuery("SELECT e FROM GameBundle:objects e WHERE e.name='$object'")
+                                ->getResult();
+
+                            $eventObject_id = 0;
+                            for($j = 0; $j < count($objects); $j++) {
+                                if($eventObject[0]->getId() == $objects[$j]->getId()) {
+                                    $eventObject_id = $j;
+                                }
+                            }
+                            array_push($possibleObjects, $eventObject_id);
+
+                        }
+
+                    }
+
+                    $object_id = rand(0, count($possibleObjects) -1);
+
+
+
                     $newBelong = new belongs;
-                    $objectToAssign = $objects[$rand];
+                    $objectToAssign = $objects[$possibleObjects[$object_id]];
 
                     $newBelong->setCharacter($charac);
                     $newBelong->setObject($objectToAssign);
@@ -866,6 +977,8 @@ class DefaultController extends Controller
         $newLife = $charac->getLife() + $object->getLifeBonus();
         $newAttack = $charac->getAttack() + $object->getAttackBonus();
         $newDefense = $charac->getDefense() + $object->getDefenseBonus();
+
+        $log = "Effect : Attack Bonus : ".$object->getAttackBonus().", Defense Bonus : ".$object->getDefenseBonus().", Life Bonus : ".$object->getLifeBonus();
         $charac->setLife($newLife);
         $charac->setAttack($newAttack);
         $charac->setDefense($newDefense);
@@ -881,7 +994,7 @@ class DefaultController extends Controller
 
         $this->addFlash(
             'notice',
-            'You used the object'
+            'You used the object'.$log
         );
         return $this->redirectToRoute('inventory', array('id' => $characId));
 

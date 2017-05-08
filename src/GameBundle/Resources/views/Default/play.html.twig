@@ -7,6 +7,8 @@
 
     <div class="row">
         <div id="InformationsPerso" class="col panel panel-default" style="border: solid">
+
+            <div class="panel-heading text-center">Informations </div>
             <div class="row">
 
                 <div class="col-lg-5 col-md-5 col-sm-5">
@@ -24,7 +26,7 @@
                 </div>
 
                 <div class="col-lg-7 col-md-7 col-sm-7">
-                    <div class="text-center">The name of your enemy is <span class="enemy">{{ enemy.name }}
+                    <div class="text-center">Enemy : <span class="enemy">{{ enemy.name }}
 
                             <div class="enemyDescription" style="border: solid">{{ enemy.description }}</div>
                         </span> and it has : {{ enemy.life }} hp</div>
@@ -42,18 +44,20 @@
     <div class="row">
         <div  style="border: solid" id="options" class="col panel panel-default text-center">
 
-            <div> Your actions :</div>
+            <div class="panel-heading">Your actions</div>
 
             <span><a class="btn" href="/fight/{{ enemy.id }}" id="fight">Fight (10 Stamina) </a></span>
             <span><a class="btn" href="/run" id="run">Run (20 Stamina) </a></span>
             <span><a class="btn" href="/inventory/{{ charac.id }}" id="inventory">Inventory</a></span>
+
+            {% for e in possible %} {{ e }} {% endfor %}
         </div>
     </div>
 
 
     <div class="row">
         <div  style="border: solid" id="options" class="col panel panel-default text-center">
-            <div class="panel-heading">Log Fighting</div>
+            <div class="panel-heading">Fighting Log</div>
             {% for l in log %}
             <div class="panel-body">
                 {{ l }}

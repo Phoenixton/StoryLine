@@ -58,9 +58,8 @@ class user implements UserInterface
     private $currentCharacter;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="avatar", type="string", nullable=true)
      *
-     * @Assert\NotBlank(message="Please, upload the avatar you wish.")
      * @Assert\File(mimeTypes={ "image/png" })
      */
     private $avatar;
@@ -200,7 +199,7 @@ class user implements UserInterface
     /**
      * Get avatar
      *
-     * @return file
+     * @return boolean
      */
     public function getAvatar()
     {
@@ -210,7 +209,7 @@ class user implements UserInterface
     /**
      * Set avatar
      *
-     * @param file $avatar
+     * @param boolean $avatar
      *
      * @return user
      */

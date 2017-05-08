@@ -25,7 +25,7 @@ class RegisterUserController extends Controller
         $form = $this->createFormBuilder($newUser)
             ->add('username', TextType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
             ->add('password', TextType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'form-control', 'style' => 'margin-bottom:15px')))
-            ->add('avatar', FileType::class, array('label' => 'Avatar (PNG file)'))
+            ->add('avatar', FileType::class, array('label' => 'Avatar (PNG file)', 'required' => false))
             ->add('save', SubmitType::class, array('label' => 'Register', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
             ->getForm();
 
@@ -35,21 +35,26 @@ class RegisterUserController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
 
 
-                /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-                $avatar = $newUser->getAvatar();
+                if($form['avatar']->getData() != null) {
 
-                // Generate a unique name for the file before saving it
-                $fileName = md5(uniqid()).'.'.$avatar->guessExtension();
+                    /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                    $avatar = $newUser->getAvatar();
 
-                // Move the file to the directory where brochures are stored
-                $avatar->move(
-                    $this->getParameter('avatar_directory'),
-                    $fileName
-                );
-                // Update the 'brochure' property to store the PDF file name
-                // instead of its contents
-                $newUser->setAvatar($fileName);
+                    // Generate a unique name for the file before saving it
+                    $fileName = md5(uniqid()).'.'.$avatar->guessExtension();
 
+                    // Move the file to the directory where brochures are stored
+                    $avatar->move(
+                        $this->getParameter('avatar_directory'),
+                        $fileName
+                    );
+                    // Update the 'brochure' property to store the PDF file name
+                    // instead of its contents
+                    $newUser->setAvatar($fileName);
+
+                } else {
+
+                }
                 //Get the data from the form
                 $username = $form['username']->getData();
                 $password = $form['password']->getData();
