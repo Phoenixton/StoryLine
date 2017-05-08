@@ -108,3 +108,10 @@ Beaucoup d'idées nous trottent dans la tête sur comment améliorer ce projet (out
   -  Un système de points d'expérience lié à chaque personnage. A la fin d'un combat, on pourrait ainsi monter de niveau et répartir des points de compétence pour permettre un level up plus agréable.
   -  Un rendu graphique plus satisfaisant, principalement au niveau de l'écran de jeu. Le log d'actions est assez austère.
   -  Une possibilité d'envoyer (comme sur Candy crush par exemple) des points d'actions d'un joueur à un autre.
+
+  ## 3. Le projet sur Github 
+
+  Voici le lien pour le projet sur Github : 
+
+  https://github.com/Phoenixton/StoryLine
+
