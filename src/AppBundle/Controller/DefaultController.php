@@ -801,7 +801,7 @@ class DefaultController extends Controller
 
                 $this->addFlash(
                     'error',
-                    'You died! Better luck next time! \n '
+                    'You died! Better luck next time!'
                 );
 
                 return $this->redirectToRoute('characterReview');

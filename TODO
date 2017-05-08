@@ -8,8 +8,6 @@
 -> Create charac texte explicatif !!!!!
 
 
--> current event
-
 
 
                             <li><a href="{{ asset('uploads/avatar/' ~ app.user.avatar) }}">View Avatar</a>

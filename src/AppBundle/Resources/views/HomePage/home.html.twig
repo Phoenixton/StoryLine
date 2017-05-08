@@ -84,7 +84,11 @@ Watch your characters die endlessly. </p>
                         <span><u><b>Username</b></u> : {{ app.user.username }}</span>
                     </div>
                     <div class="panel-body text-center">
-                        <span><u><b>Current Character</b></u> : {{ currentChar.name }}</span>, <span><u><b>Current Room Number </b></u> : {{ currentChar.roomscompleted +1 }}</span>
+                        {% if currentChar == NULL %}
+                            <span><u><b>Current Character</b></u> : No Character Selected </span>
+                        {% else %}
+                            <span><u><b>Current Character</b></u> : {{ currentChar.name }}</span>, <span><u><b>Current Room Number </b></u> : {{ currentChar.roomscompleted +1 }}</span>
+                        {% endif %}
                     </div>
 
                 </div>
@@ -104,13 +108,14 @@ Watch your characters die endlessly. </p>
                                 <span><u><b>Nom :</b></u> {{ event.name }}</span>
                                 <span>
                                     {% if event.monster != NULL and event.object != NULL %}
-                                    <u><b>Monsters/Objects affected :</b></u>     {{  event.monster }} / {{ event.object }}
+                                    <u><b>Monster/Object affected :</b></u>     {{  event.monster }} / {{ event.object }}
                                     {% elseif event.monster %}
                                     <u><b>Monster Affected :</b></u> {{ event.monster }}
                                     {% elseif event.object %}
                                     <u><b>Object Affected :</b></u> {{ event.object }}
                                     {% else %}
                                     {% endif %}
+                                    <u><b> End :</b></u> {{ event.endDate|date('d-m-y H:i:s') }}
                                 </span>
                             </div>
                         {% endfor %}
@@ -131,13 +136,15 @@ Watch your characters die endlessly. </p>
                                 <span><u><b>Nom :</b></u> {{ event.name }}</span>
                                 <span>
                                     {% if event.monster != NULL and event.object != NULL %}
-                                        <u><b>Monsters/Objects affected : </b></u>    {{  event.monster }} / {{ event.object }}
+                                        <u><b>Monster/Object affected : </b></u>    {{  event.monster }} / {{ event.object }}
                                     {% elseif event.monster %}
                                         <u><b>Monster Affected :</b></u> {{ event.monster }}
                                     {% elseif event.object %}
                                         <u><b>Object Affected : </b></u>{{ event.object }}
                                     {% else %}
                                     {% endif %}
+                                    <u><b>Start :</b></u> {{ event.begindate|date('d-m-y') }},
+                                    <u><b> End :</b></u> {{ event.endDate|date('d-m-y') }}
                                 </span>
                             </div>
                         {% endfor %}

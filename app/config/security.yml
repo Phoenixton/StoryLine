@@ -8,8 +8,6 @@ security:
         Symfony\Component\Security\Core\User\User:
             algorithm: plaintext
 
-    role_hierarchy:
-        ROLE_ADMIN: [ROLE_USER]
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
@@ -40,9 +38,16 @@ security:
                 path: /logout
                 target: /
 
+            access_denied_handler: app.security.access_denied_handler
+            access_denied_url: /login
+
     access_control:
         - { path: /user, roles: ROLE_ADMIN }
+        - { path: /play, roles: ROLE_USER }
         - { path: /listofusers, roles: ROLE_USER }
         - { path: /createCharacter, roles: ROLE_USER }
         - { path: /seeCharacter, roles: ROLE_USER }
         - { path: /sendMessage, roles: ROLE_USER }
+        - { path: /messagesReceived, roles: ROLE_USER }
+        - { path: /messagesSent, roles: ROLE_USER }
+        - { path: /bestiary, roles: ROLE_USER }

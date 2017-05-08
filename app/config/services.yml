@@ -4,6 +4,9 @@ parameters:
     #parameter_name: value
 
 services:
+    app.security.access_denied_handler:
+        class: AppBundle\Security\AccessDeniedHandler
+
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
